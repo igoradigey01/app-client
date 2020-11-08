@@ -1,0 +1,23 @@
+.bg {
+  /* Center and scale the image nicely */
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-color: #bcc8c3;
+}
+button {
+  font-size: 1.2em;
+  font-weight: 600;
+  color: #161414;
+
+  text-transform: uppercase;
+  text-align: center;
+
+  border: 0.2em solid white;
+  border-radius: 0.5em;
+}
+
+button:hover {
+  border: solid #e66333;
+  background-color: #00978e;
+}

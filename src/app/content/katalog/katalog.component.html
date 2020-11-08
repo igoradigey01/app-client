@@ -1,0 +1,14 @@
+<div class="container-fluid">
+  <div class="grid-container">
+    <button
+      *ngFor="let item of categories"
+      class="btn"
+      [class.active]="item == _selectedType"
+      (click)="changeCategory(item)"
+      [routerLink]="['product',item.id]"
+    >
+      {{ item.name }}
+    </button>
+  </div>
+</div>
+<!--     22.04.20              -->

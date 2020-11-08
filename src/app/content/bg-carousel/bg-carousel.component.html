@@ -1,0 +1,31 @@
+<div class="bg " style="background-image:url({{_imgScr}})" >
+ <!-- close 04.05.2020 start
+    <button (click)="onClick()">Trigger change detection</button>
+ end 04.50.2020-->
+ <!----x_01 карусель  background-image:url   из _listImg start -->
+ <div class="text-center " style="padding-top: 0.5%; padding-bottom: 0.4%;">
+ <div>
+  <span id='back' name='back1' (click)="onback()"    ><img src="./../../assets/icon/left-arr-wite.svg" height="30" alt=""/></span>
+  <span  ><img  src={{_srcImg1}} height="23" alt=""/></span>
+    <span><img src={{_srcImg2}} height="23" alt=""/></span>
+      <span><img src={{_srcImg3}} height="23" alt=""/></span>
+        <span><img src={{_srcImg4}} height="23" alt=""/></span>
+          <span><img src={{_srcImg5}} height="23" alt=""/></span>
+            <span id="next" (click)="onnext()"  > <img src="./../../assets/icon/right-arr-wite.svg" height="30" alt=""/></span>
+          </div>
+ <button id="btFlag" (click)="onchengFlag()">
+
+
+ Фон</button>
+</div>
+<!-- --x_01 карусель  background-image:url   из _listImg end -->
+
+<app-katalog ></app-katalog>
+    <!-- test использование css стилей в компонентах-->
+
+
+
+
+</div>
+
+

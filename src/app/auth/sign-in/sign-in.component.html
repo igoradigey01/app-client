@@ -1,0 +1,61 @@
+<p></p>
+<div class="container" style="margin: auto;">
+  <div class="row">
+    <div class="col-md-6 offset-md-3 col-xs-12">
+      <div class="card">
+        <div class="card-header" style="text-align: center;">ВОЙДИТЕ</div>
+        <div class="card-body">
+          <!--Error messages Server output start-->
+
+      <div class="alert alert-danger" role="alert" *ngIf="_errorMgs?.length">
+
+
+        <ul>
+          <li *ngFor="let error of _errorMgs">
+            {{ error }}
+          </li>
+        </ul>
+
+      </div>
+
+       <!--Error messages Server output end-->
+          <form [formGroup]="_form" (ngSubmit)="submitForm()">
+            <div class="form-group">
+              <label for="email"> Адрес электронной почты:</label>
+              <input type="email" class="form-control" id="email" formControlName="email" />
+            </div>
+            <div class="form-group">
+              <label for="password">Пароль:</label>
+              <input type="password" class="form-control" id="password" formControlName="password" />
+            </div>
+
+            <div>
+            <button type="submit" [disabled]="_flagButoon" class="btn btn-primary" style="width: 100%;">Войти</button>
+          </div>
+          </form>
+          <div >
+            <ul class=" ml-auto text-uppercase list-inline  justify-content-cente">
+              <li class="list-inline-item">
+                <a
+                  class="nav-link"
+                  routerLink=""
+                  routerLinkActive="active"
+                  >Забыли пароль?</a
+                >
+              </li>
+              <li class="list-inline-item">
+                <a
+                  class="nav-link"
+                  routerLink="sing-up"
+                  routerLinkActive="active"
+                  >Создать учетную запись?
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<p></p>
