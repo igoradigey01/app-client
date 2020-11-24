@@ -8,7 +8,7 @@ import {ContentComponent} from './content.component'
 
 @NgModule({
   declarations: [
-    KatalogComponent,
+   KatalogComponent,
     BgCarouselComponent,
     ContentComponent,
 
@@ -18,7 +18,7 @@ import {ContentComponent} from './content.component'
     ContentRoutingModule
   ],
   exports: [
-    KatalogComponent,
+   KatalogComponent,
     BgCarouselComponent,
     ContentComponent,
   ]

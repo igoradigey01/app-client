@@ -1,6 +1,6 @@
 //import {Observer,Observable} from 'rxjs';
 import {Injectable} from "@angular/core";
-import { User } from './model/data.model';
+import { User } from './data-model/class-data.model';
 
 @Injectable()
 export class GlobalVar {

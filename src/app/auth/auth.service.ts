@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import {User} from './../model/data.model'
+import {User} from './../data-model/class-data.model'
 import {  Observable} from 'rxjs';
 import {  tap } from 'rxjs/operators';
 import { HttpClient , HttpHeaders} from '@angular/common/http';

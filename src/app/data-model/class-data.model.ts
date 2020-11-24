@@ -1,7 +1,7 @@
-﻿import {IProduct,IFile,ICategory, IUser} from './data-interfaces.model';
+﻿
 
 // конечное представление  продукта Камод-лдсп Камод-мдф Кровать-2000*1400
-export class Product implements IProduct {
+export class Product {
 
     constructor(
         public id: number,
@@ -13,24 +13,21 @@ export class Product implements IProduct {
         public description?: string,
         public price?: number,
         public priceK?:number,
-        public imgFiles?:IFile[],
+        public imgFiles?:string
 
 
         ) { }
 }
 
 // категория продукта ---камод стол шкаф двиван---
-export class ProductType implements ICategory{
+export class Katalog {
 
   constructor(public id:number,
-              public name:string,
-              public description?: string,
-              public file?:IFile[]
-
+              public name:string
               ){}
 }
 // -- дон орех,венги,солешкаМрамор,кожЗам коричневый,рагожка серая
-export class Nomenclature implements ICategory{
+export class Nomenclature {
 
   constructor(
            public id:number,
@@ -38,39 +35,39 @@ export class Nomenclature implements ICategory{
            public name:string,
            public alias?:string,
            public description?: string,
-           public file?:IFile[],
+           public file?:string,
            public combined?:boolean,
            public combinedID?:number[]
             ){}
 }
 
 // mdf ткани столешницы ламинат
-export class NomenclatureType implements ICategory{
+export class NomenclatureType {
 
   constructor (
     public id:number,
     public ShopingTypeId:number,//МягкаяМебель  КорпусМебель
     public name:string,
     public description?: string,
-    public file?:IFile[],
+    public file?:string,
     public combined?:boolean,
     public combinedID?:number[]
   ){}
 }
 
 //МягкаяМебель  КорпусМебель или другая карегрия сайта(идеи предстваления товара пользователю)
- export class ShopingType implements ICategory{
+ export class ShopingType {
    constructor(
     public id:number,
     public name:string,
     public description?: string,
-    public file?:IFile[]
+    public file?:string
    ){}
  }
 
  // Аунтефикация Auth------------------------
 
- export class User implements IUser {
+ export class User  {
   constructor(
  //public id?:number,
  public name?: string,

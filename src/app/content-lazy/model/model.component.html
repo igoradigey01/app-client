@@ -1,15 +1,7 @@
 
 <p> text ---------app-product---- Get-Model? get-Category?  (Type)  -----</p>
 <div class="container-fluid">
-  <div class="header">
-  <h2 class=" text-info">{{ _selectedCategory.name }}</h2>
 
-  <ul *ngIf="_flagVizyalButton" class="nav justify-content-center ">
-    <li *ngFor="let item of _buttonFlags" class="nav-item">
-      <button class="btn btn-info">{{ item.name }}</button>
-    </li>
-  </ul>
-</div>
    <!-- Grid table-->
   <div class="grid-container">
     <div class="card m-1 p-1 border-info " *ngFor="let item of getProducts()">
@@ -17,7 +9,7 @@
         <h4 class="card-title  text-info">{{ item.name }}</h4>
         <img
           class="card-img-top"
-          src="{{ item.imgFiles[0].path + item.imgFiles[0].name }}"
+          src="{{ item.imgFiles}}"
         />
 
         <p></p>

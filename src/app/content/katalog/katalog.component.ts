@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
-import { ProductType} from "../../model/data.model";
-import {DataService} from '../data.service';
+import {Katalog } from '../../data-model/class-data.model';
+import {KatalogDataService} from '../../data-model/katalog-data.service';
 
 
 
@@ -9,22 +9,22 @@ import {DataService} from '../data.service';
   selector: 'app-katalog',
   templateUrl: './katalog.component.html',
   styleUrls: ['./katalog.component.css'],
-  providers: [DataService]
+  providers: [KatalogDataService]
 })
 export class KatalogComponent implements OnInit {
 
 
-  public _selectedType:ProductType = null;//выбор категории
+  public _selectedType:Katalog = null;//выбор категории
   private _flag:boolean=false;
-  private _katalog:ProductType[]=null;
+  private _katalog:Katalog[]=null;
 
   //-------------------
   constructor(
-    private repository: DataService
+    private repository: KatalogDataService
     ) { }
 
   ngOnInit(): void {
-         this.repository.GetProductType().subscribe(data=>this._katalog=data);
+         this.repository.GetKatalogs().subscribe(data=>this._katalog=data);
   }
 
 
@@ -35,12 +35,12 @@ get products(): Product[]
   return this.repository.getProducts(this._selectedCategory.id);
 }
 */
-get categories(): ProductType[]
+get categories(): Katalog[]
 {
 return this._katalog;
 }
 
-changeCategory(item?: ProductType)
+changeCategory(item?: Katalog)
  {
   this._selectedType = item;
  }

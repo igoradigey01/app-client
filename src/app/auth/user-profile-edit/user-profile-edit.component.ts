@@ -5,7 +5,7 @@ import {FormGroup, FormControl, Validators,FormBuilder,AbstractControl, Validato
 import { GlobalVar} from '../../globalVar';
 import { Router } from '@angular/router';
 import { AuthService} from './../auth.service';
-import { User } from 'src/app/model/data.model';
+import { User } from './../../data-model/class-data.model';
 
 import { HttpErrorResponse } from '@angular/common/http';
 
