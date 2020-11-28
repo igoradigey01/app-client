@@ -1,5 +1,6 @@
-<p>Katalog admin works!</p>
-
+<div class="row">
+<div class="btn-danger col-sm-2 text-center" routerLink="/admin" > модуль admin</div>
+</div>
 <div [ngSwitch]="_flagViewMode">
   <ng-template ngSwitchDefault>
     <div class="container-fluid">
@@ -25,7 +26,7 @@
   <!--  Create template -->
   <ng-template ngSwitchCase="create">
     <div class="create">
-      <p>test template create</p>
+      <p>Создать Элемент</p>
       <p>{{ _selectedKagalog.name }}</p>
       <input [(ngModel)]="_selectedKagalog.name" />
       <div></div>
@@ -44,7 +45,7 @@
           <img src="./../../../assets/icon/add-button.png" height="25" />
         </button>
       </div>
-      <p>test template edit</p>
+      <p>Редактировать  Элемент</p>
       <input [(ngModel)]="_selectedKagalog.name" />
       <div cclass="btn-group" role="group">
         <button class="btn btn-sm btn-success" (click)="saveItem()">

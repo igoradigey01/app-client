@@ -15,7 +15,7 @@ export class KatalogDataService {
   GetUrl():string{
   return  environment.apiLocalHost + '/' + this._controllerPath;
    }
-   productTypes:Katalog[];
+   //_katalog:Katalog[];
 
   constructor(
     private http:HttpClient

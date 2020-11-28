@@ -57,10 +57,12 @@ export class NomenclatureType {
 }
 
 //МягкаяМебель  КорпусМебель или другая карегрия сайта(идеи предстваления товара пользователю)
- export class ShopingType {
+ export class Model {
    constructor(
     public id:number,
     public name:string,
+    public idKatalog:number,
+    public prace?:number,
     public description?: string,
     public file?:string
    ){}

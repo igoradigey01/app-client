@@ -7,14 +7,16 @@ import { KatalogComponent } from './katalog/katalog.component';
 import { NomenclatureComponent } from './nomenclature/nomenclature.component';
 
 import { AdminComponent } from './admin/admin.component';
-import{FormsModule} from '@angular/forms';;
+import{FormsModule} from '@angular/forms';
+import { ModelComponent } from './model/model.component';;
 
 
 @NgModule({
   declarations: [
     KatalogComponent,
     NomenclatureComponent,
-    AdminComponent
+    AdminComponent,
+    ModelComponent
     ],
   imports: [
     CommonModule,
