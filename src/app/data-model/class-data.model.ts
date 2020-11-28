@@ -25,6 +25,7 @@ export class Katalog {
   constructor(public id:number,
               public name:string
               ){}
+
 }
 // -- дон орех,венги,солешкаМрамор,кожЗам коричневый,рагожка серая
 export class Nomenclature {

@@ -9,11 +9,11 @@ import { environment } from '../../environments/environment';
 @Injectable()
 export class KatalogDataService {
 
-  readonly _controllerPath:string="Product";
-  readonly _url:string="Type";
+  readonly _controllerPath:string="katalog";
+  //readonly _url:string="Type";
 
   GetUrl():string{
-  return  environment.apiLocalHost + '/' + this._controllerPath+'/'+this._url;
+  return  environment.apiLocalHost + '/' + this._controllerPath;
    }
    productTypes:Katalog[];
 
@@ -22,8 +22,26 @@ export class KatalogDataService {
   ) { }
 
     GetKatalogs():Observable<Katalog[]>{
-      console.log("DataServise---ProductType-test")
+    //  console.log("DataServise---ProductType-test")
       return this.http.get<Katalog[]> (this.GetUrl());
-
   }
+
+  CreateKatalog(katalog:Katalog){
+    console.log("CreateKatalog --post"+katalog.id+"--"+katalog.name);
+    return this.http.post(this.GetUrl(),katalog);
+  }
+
+   UpdateKatalog(katalog:Katalog){
+    console.log("UpdateKatalog --put"+katalog.id+"--"+katalog.name);
+
+    return this.http.put(this.GetUrl()+'/'+katalog.id,katalog);
+
+
+   }
+
+   DeleteKatalog(id:number){
+    console.log("DeleteKatalog --delete--"+id);
+    return this.http.delete(this.GetUrl()+'/'+id);
+
+   }
 }

@@ -1,0 +1,62 @@
+<p>Katalog admin works!</p>
+
+<div [ngSwitch]="_flagViewMode">
+  <ng-template ngSwitchDefault>
+    <div class="container-fluid">
+      <div class="grid-container">
+        <button
+          *ngFor="let item of _katalogs"
+          class="btn "
+          [class.active]="item == _selectedKagalog"
+          (click)="changeCategory(item)"
+        >
+        <span
+            class="text-primary rounded-circle bg-warning p-2"
+
+          >{{item.id}}</span>
+          {{ item.name }}
+        </button>
+        <button class="btn" (click)="addItem()">
+          <img src="./../../../assets/icon/add-button.png" height="30" />
+        </button>
+      </div>
+    </div>
+  </ng-template>
+  <!--  Create template -->
+  <ng-template ngSwitchCase="create">
+    <div class="create">
+      <p>test template create</p>
+      <p>{{ _selectedKagalog.name }}</p>
+      <input [(ngModel)]="_selectedKagalog.name" />
+      <div></div>
+      <button class="btn btn-sm btn-success" (click)="saveItem()">
+        Сохранить
+      </button>
+      <button class="btn btn-sm btn-warning" (click)="cancel()">Отмена</button>
+    </div>
+  </ng-template>
+
+  <!--  Edit -Delete template -->
+  <ng-template ngSwitchCase="edit">
+    <div class="edit">
+      <div>
+        <button class="btn btn-sm btn-primary" (click)="addItem()">
+          <img src="./../../../assets/icon/add-button.png" height="25" />
+        </button>
+      </div>
+      <p>test template edit</p>
+      <input [(ngModel)]="_selectedKagalog.name" />
+      <div cclass="btn-group" role="group">
+        <button class="btn btn-sm btn-success" (click)="saveItem()">
+          Сохранить
+        </button>
+        <button class="btn btn-sm btn-danger" (click)="deleteItem()">
+          Удалить
+        </button>
+        <button class="btn btn-sm btn-warning" (click)="cancel()">
+          Отмена
+        </button>
+      </div>
+    </div>
+  </ng-template>
+</div>

@@ -2,25 +2,24 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { AdminRoutingModule } from './admin-routing.module';
-import { ProductComponent } from './product/product.component';
+import { KatalogComponent } from './katalog/katalog.component';
 
 import { NomenclatureComponent } from './nomenclature/nomenclature.component';
 
 import { AdminComponent } from './admin/admin.component';
-
+import{FormsModule} from '@angular/forms';;
 
 
 @NgModule({
   declarations: [
-    ProductComponent,
-
+    KatalogComponent,
     NomenclatureComponent,
-
     AdminComponent
     ],
   imports: [
     CommonModule,
-    AdminRoutingModule
+    AdminRoutingModule,
+    FormsModule
   ]
 })
 export class AdminModule { }
