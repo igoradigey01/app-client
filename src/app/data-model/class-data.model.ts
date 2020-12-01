@@ -64,7 +64,7 @@ export class NomenclatureType {
     public idKatalog:number,
     public prace?:number,
     public description?: string,
-    public file?:string
+    public imgpath?:string
    ){}
  }
 

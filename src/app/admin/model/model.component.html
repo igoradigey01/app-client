@@ -1,16 +1,73 @@
-<p>model works!</p>
 <div class="row">
-  <div class="btn-danger col-sm-2 text-center" routerLink="/admin" > модуль admin</div>
-  </div>
-<div class="container-fluid">
-
-  <div class="row">
-
-
-    <div class="col-sm-2"><button><span>id</span> Name ModelS</button></div>
-    <div class="col-sm-2">|Get katalog</div>
-    <div class="col-sm-1">|Price</div>
-    <div class="col-sm-6">|descripstion</div>
-  <div class="col-sm-1">|<img src="./../../../assets/images/kamod/laminat/k-1.jpg" alt="" height="40" srcset=""></div>
+  <div class="btn-danger col-sm-2 text-center" routerLink="/admin">
+    модуль admin
   </div>
 </div>
+<div class="row">
+  <div class="btn-warning col-sm-2 text-center">
+    id(
+    <span class="text-primary"> {{ _selectedKagalog.id }}</span
+    >)
+    {{ _selectedKagalog.name }}
+  </div>
+</div>
+
+<!-- template-->
+<div [ngSwitch]="_flagViewMode">
+  <ng-template ngSwitchDefault>
+
+
+<div
+  [ngClass]="{ 'grid-container2': _flagPanel2, 'grid-container1': _flagPanel1 }"
+>
+  <div class="bg-primary" (click)="ViwePanel()">
+    <div class="bg-warning" [ngClass]="{ hiden: _flagKatalogHiden }">
+      <ul class="nav flex-column">
+        <li
+          *ngFor="let item of _katalogs"
+          [class.active]="item == _selectedKagalog"
+          class="nav-item"
+          (click)="changeKagalog(item)"
+        >
+          {{ item.name }}
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="grid-sub-container-ms grid-sub-container">
+    <div>id</div>
+    <div>Name</div>
+    <div>Price</div>
+    <div class="hiden-description">|descripstion</div>
+    <div>images</div>
+
+    <!-- start model view-->
+    <ng-template ngFor let-model [ngForOf]="_models" let-i="index">
+      <div [ngClass]="{ 'row-grid': i % 2 == 0 }">{{ model.id }}</div>
+      <div [ngClass]="{ 'row-grid': i % 2 == 0 }">{{ model.name }}</div>
+      <div [ngClass]="{ 'row-grid': i % 2 == 0 }">{{ model.prace }}</div>
+      <div class="hiden-description" [ngClass]="{ 'row-grid': i % 2 == 0 }">
+        {{ model.description }}
+      </div>
+      <div [ngClass]="{ 'row-grid': i % 2 == 0 }">{{ model.imgpath }}</div>
+    </ng-template>
+    <!-- end  model view-->
+
+    <div>id</div>
+    <div>Name ModelS</div>
+    <div>|Price</div>
+    <div class="hiden-description">|descripstion</div>
+    <div>
+      |<img
+        src="./../../../assets/images/kamod/laminat/k-1.jpg"
+        alt=""
+        height="38"
+        srcset=""
+      />
+    </div>
+  </div>
+</div>
+  </ng-template>
+  </div>
+
