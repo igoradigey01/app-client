@@ -8,7 +8,8 @@ import { NomenclatureComponent } from './nomenclature/nomenclature.component';
 
 import { AdminComponent } from './admin/admin.component';
 import{FormsModule} from '@angular/forms';
-import { ModelComponent } from './model/model.component';;
+import { ModelComponent } from './model/model.component';
+import { UploadFilesComponent } from './upload-files/upload-files.component';;
 
 
 @NgModule({
@@ -16,7 +17,8 @@ import { ModelComponent } from './model/model.component';;
     KatalogComponent,
     NomenclatureComponent,
     AdminComponent,
-    ModelComponent
+    ModelComponent,
+    UploadFilesComponent
     ],
   imports: [
     CommonModule,

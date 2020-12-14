@@ -1,21 +1,31 @@
-<div class="row">
-  <div class="btn-danger col-sm-2 text-center" routerLink="/admin">
+
+<div class="grid-container-menu" style="background-color: blueviolet;">
+
+  <div class="btn-danger text-center item-menu-1" routerLink="/admin">
     модуль admin
   </div>
-</div>
-<div class="row">
-  <div class="btn-warning col-sm-2 text-center">
+
+  <div class="btn-warning  text-center item-menu-2" (click)="cancel()">
     id(
     <span class="text-primary"> {{ _selectedKagalog.id }}</span
     >)
     {{ _selectedKagalog.name }}
   </div>
+
+
+
+  <div class="btn item-menu-3"  (click)="addModel()" [style.display]="_flagDisplayAddButton?'block':'none'">
+    <img src="./../../../assets/icon/add-button.png" height="25" />
+
 </div>
 
-<!-- template-->
+</div>
+
+
+
+<!-- template ngSwitch  ----------->
 <div [ngSwitch]="_flagViewMode">
   <ng-template ngSwitchDefault>
-
 
 <div
   [ngClass]="{ 'grid-container2': _flagPanel2, 'grid-container1': _flagPanel1 }"
@@ -27,7 +37,8 @@
           *ngFor="let item of _katalogs"
           [class.active]="item == _selectedKagalog"
           class="nav-item"
-          (click)="changeKagalog(item)"
+          (click)="changeKagalog(item)
+         "
         >
           {{ item.name }}
         </li>
@@ -43,11 +54,11 @@
     <div>images</div>
 
     <!-- start model view-->
-    <ng-template ngFor let-model [ngForOf]="_models" let-i="index">
-      <div [ngClass]="{ 'row-grid': i % 2 == 0 }">{{ model.id }}</div>
-      <div [ngClass]="{ 'row-grid': i % 2 == 0 }">{{ model.name }}</div>
-      <div [ngClass]="{ 'row-grid': i % 2 == 0 }">{{ model.prace }}</div>
-      <div class="hiden-description" [ngClass]="{ 'row-grid': i % 2 == 0 }">
+    <ng-template ngFor let-model [ngForOf]="_models" let-i="index" >
+      <div [ngClass]="{ 'row-grid': i % 2 == 0 }" (click)="changeModel(model)" >{{ model.id }} </div>
+      <div [ngClass]="{ 'row-grid': i % 2 == 0 }" (click)="changeModel(model)" >{{ model.name }}  </div>
+      <div [ngClass]="{ 'row-grid': i % 2 == 0 }" >{{ model.prace }}  </div>
+      <div class="hiden-description" [ngClass]="{ 'row-grid': i % 2 == 0 }" >
         {{ model.description }}
       </div>
       <div [ngClass]="{ 'row-grid': i % 2 == 0 }">{{ model.imgpath }}</div>
@@ -69,5 +80,66 @@
   </div>
 </div>
   </ng-template>
+  <ng-template ngSwitchCase="create">
+    <div class="create">
+      <p>Создать Элемент</p>
+<!---------------------------create start-->
+
+     <label >id</label>
+     <label>{{_selectedModel.id}}</label>
+     <label>Католог</label>
+     <label>{{ _selectedKagalog.name }}</label>
+     <label>Название</label>
+     <input  [(ngModel)]='_selectedModel.name'  placeholder="Название">
+     <label >Цена</label>
+     <input  [(ngModel)]='_selectedModel.price'   placeholder="Цена">
+     <label>Торговая наценка</label>
+     <input [(ngModel)]='_selectedModel.markup'  placeholder="Торговая наценка">
+     <label>описание товара</label>
+     <input [(ngModel)]='_selectedModel.description' placeholder="описание товара">
+     <label>Изображение</label>
+
+   <app-upload-files (_onSelectFile)="onSetFilePhoto($event)"></app-upload-files>
+
+      <label>----------------</label>
+
+
+
+      <p>Создать Элемент</p>
+
+      <div></div>
+      <button class="btn btn-sm btn-success" (click)="saveModel()">
+        Сохранить
+      </button>
+      <button class="btn btn-sm btn-warning" (click)="cancel()">Отмена</button>
+    </div>
+    <!----------------- create end-->
+  </ng-template>
+
+  <ng-template ngSwitchCase="edit">
+    <div class="edit">
+      <p>Редактировать Элемент</p>
+      <div>
+        <button class="btn btn-sm btn-primary" (click)="addModel()">
+          <img src="./../../../assets/icon/add-button.png" height="25" />
+        </button>
+      </div>
+      <p>Редактировать  Элемент</p>
+      <input [(ngModel)]="_selectedKagalog.name" />
+      <div cclass="btn-group" role="group">
+        <button class="btn btn-sm btn-success" (click)="saveModel()">
+          Сохранить
+        </button>
+        <button class="btn btn-sm btn-danger" (click)="deleteModel()">
+          Удалить
+        </button>
+        <button class="btn btn-sm btn-warning" (click)="cancel()">
+          Отмена
+        </button>
+      </div>
+    </div>
+  </ng-template>
+
   </div>
+
 

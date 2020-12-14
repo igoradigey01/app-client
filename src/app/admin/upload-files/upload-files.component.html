@@ -1,0 +1,7 @@
+<p>upload-files ----- works!</p>
+<!-------------------------------------------------------------->
+<input type="file" (change)='changeFale($event)'/><label>Выберете файл</label>
+
+<div class="image-preview mb-3" *ngIf="_previewUrl">
+  <img [src]="_previewUrl" height="300" />
+</div>

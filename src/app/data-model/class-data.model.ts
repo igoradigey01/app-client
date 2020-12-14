@@ -1,4 +1,5 @@
-﻿
+
+
 
 // конечное представление  продукта Камод-лдсп Камод-мдф Кровать-2000*1400
 export class Product {
@@ -56,15 +57,17 @@ export class NomenclatureType {
   ){}
 }
 
-//МягкаяМебель  КорпусМебель или другая карегрия сайта(идеи предстваления товара пользователю)
+// камод-мдф  камод-ламинат kamoд-пеленальный\ шкаф-купе-1200 \ шкаф-купе-1400 \шкаф-2яшика-800
  export class Model {
    constructor(
     public id:number,
     public name:string,
     public idKatalog:number,
-    public prace?:number,
+    public price?:number,
+    public markup?:number,  //Торговая наценка
     public description?: string,
-    public imgpath?:string
+
+    public photo?: File
    ){}
  }
 
@@ -80,4 +83,6 @@ export class NomenclatureType {
  public address?: string
  //public role?:string
  ){}
-}
+ }
+
+//МягкаяМебель  КорпусМебель или другая карегрия сайта(идеи предстваления товара пользователю)

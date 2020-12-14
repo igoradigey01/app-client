@@ -38,7 +38,24 @@ export class ModelDataService {
     //-----------------------
   CreateModel(item:Model){
       console.log("CreateKatalog --post"+item.id+"--"+item.name);
-      return this.http.post(this.GetUrl(),item);
+      //let fileToUpload = <File>files[0];
+      const formData = new FormData();
+      console.log("photo  iii data"+item.photo+item.photo.name);
+
+     formData.append('photo',item.photo,item.photo.name);
+      /*
+      formData.append('name',item.name);
+      formData.append('idKatalog',item.idKatalog.toString());
+      formData.append('price',item.price.toString());
+      formData.append('markup',item.markup.toString());
+      formData.append('deckription',item.description);
+       */
+      Object.keys(item).forEach(key => {
+        //console.log( key+''+ item[key]);
+         if(key!='photo')
+        formData.append(key,item[key]);
+    })
+      return this.http.post(this.GetUrl(),formData);
     }
     //-------------
   UpdateModel(item:Model){
