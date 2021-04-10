@@ -8,7 +8,7 @@ import { NomenclatureComponent } from './nomenclature/nomenclature.component';
 
 import { AdminComponent } from './admin/admin.component';
 import{FormsModule} from '@angular/forms';
-import { ModelComponent } from './model/model.component';
+import { ProductComponent } from './product/product.component';
 import { UploadFilesComponent } from './upload-files/upload-files.component';;
 
 
@@ -17,7 +17,7 @@ import { UploadFilesComponent } from './upload-files/upload-files.component';;
     KatalogComponent,
     NomenclatureComponent,
     AdminComponent,
-    ModelComponent,
+    ProductComponent,
     UploadFilesComponent
     ],
   imports: [

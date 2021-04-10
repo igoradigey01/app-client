@@ -1,7 +1,5 @@
-
-
-
 // конечное представление  продукта Камод-лдсп Камод-мдф Кровать-2000*1400
+/*
 export class Product {
 
     constructor(
@@ -19,30 +17,37 @@ export class Product {
 
         ) { }
 }
+*/
 
 // категория продукта ---камод стол шкаф двиван---
 export class Katalog {
-
-  constructor(public id:number,
-              public name:string
-              ){}
-
+  constructor(public id: number, public name: string) {}
 }
+
+// тип продукта--- мдф ЛДСП--
+export class TypeProduct {
+  constructor(
+    public id: number,
+    public name: string,
+    public description: string
+  ) {}
+}
+
 // -- дон орех,венги,солешкаМрамор,кожЗам коричневый,рагожка серая
 export class Nomenclature {
-
   constructor(
-           public id:number,
-           public NomenclatureTypeId:number,
-           public name:string,
-           public alias?:string,
-           public description?: string,
-           public file?:string,
-           public combined?:boolean,
-           public combinedID?:number[]
-            ){}
+    public id: number,
+    public NomenclatureTypeId: number,
+    public name: string,
+    public alias?: string,
+    public description?: string,
+    public file?: string,
+    public combined?: boolean,
+    public combinedID?: number[]
+  ) {}
 }
 
+/*  06.04.21
 // mdf ткани столешницы ламинат
 export class NomenclatureType {
 
@@ -56,33 +61,35 @@ export class NomenclatureType {
     public combinedID?:number[]
   ){}
 }
+*/
 
-// камод-мдф  камод-ламинат kamoд-пеленальный\ шкаф-купе-1200 \ шкаф-купе-1400 \шкаф-2яшика-800
- export class Model {
-   constructor(
-    public id:number,
-    public name:string,
-    public idKatalog:number,
-    public price?:number,
-    public markup?:number,  //Торговая наценка
-    public description?: string,
-
-    public photo?: File
-   ){}
- }
-
- // Аунтефикация Auth------------------------
-
- export class User  {
+// конечное представление  продукта Камод-лдсп-венги Камод-мдф-венги Кровать-2000*1400-дубСанома
+export class Product {
   constructor(
- //public id?:number,
- public name?: string,
- public password?: string,
- public email?: string,
- public phone?: string,
- public address?: string
- //public role?:string
- ){}
- }
+    public id: number,
+    public name: string,
+    public idKatalog: number,
+    public idTypeProduct: number,
+    public price?: number,
+    public markup?: number, //Торговая наценка
+    public description?: string,
+    public photo?: File,
+    public image?: string
+  ) {}
+}
+
+// Аунтефикация Auth------------------------
+
+export class User {
+  constructor(
+    //public id?:number,
+    public name?: string,
+    public password?: string,
+    public email?: string,
+    public phone?: string,
+    public address?: string
+  ) //public role?:string
+  {}
+}
 
 //МягкаяМебель  КорпусМебель или другая карегрия сайта(идеи предстваления товара пользователю)

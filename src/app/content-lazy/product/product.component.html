@@ -1,21 +1,21 @@
 
-<p> text ---------app-product---- Get-Model? get-Category?  (Type)  -----</p>
+<div class="h4 text-center mb-0">{{_katalogName}}</div>
 <div class="container-fluid">
 
    <!-- Grid table-->
   <div class="grid-container">
-    <div class="card m-1 p-1 border-info " *ngFor="let item of getProducts()">
+    <div class="card m-1 p-1 border-info " *ngFor="let item of _products">
       <div class="card-body">
         <h4 class="card-title  text-info">{{ item.name }}</h4>
         <img
           class="card-img-top"
-          src="{{ item.imgFiles}}"
+          src="{{_url_img}}{{item.image}}"
         />
 
         <p></p>
         <ul class="list-group list-group-flush">
           <li class="list-group-item"> {{ item.description }}</li>
-          <li class="list-group-item">Цена:{{ item.price * item.priceK + item.price }}р</li>
+          <li class="list-group-item">Цена:{{ item.price * item.markup + item.price }}р</li>
 
       </ul>
 

@@ -16,7 +16,7 @@ export class KatalogComponent implements OnInit {
 
   public _selectedType:Katalog = null;//выбор категории
   private _flag:boolean=false;
-  private _katalog:Katalog[]=null;
+  private _katalogs:Katalog[]=null;
 
   //-------------------
   constructor(
@@ -24,7 +24,7 @@ export class KatalogComponent implements OnInit {
     ) { }
 
   ngOnInit(): void {
-         this.repository.GetKatalogs().subscribe(data=>this._katalog=data);
+         this.repository.GetKatalogs().subscribe(data=>this._katalogs=data);
   }
 
 
@@ -37,7 +37,7 @@ get products(): Product[]
 */
 get categories(): Katalog[]
 {
-return this._katalog;
+return this._katalogs;
 }
 
 changeCategory(item?: Katalog)

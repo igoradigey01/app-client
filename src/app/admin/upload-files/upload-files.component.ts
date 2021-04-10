@@ -27,12 +27,15 @@ export class UploadFilesComponent implements OnInit {
    // return;
       // устраняет ошибку
       //core.js:6210 ERROR TypeError: Cannot read property '0' of undefined
-    this._selectFile=files[0];
+  if(files.length>0){
+      this._selectFile=files[0];
     this.preview();
 
     // console.log("fale name upload-file.component --"+ this._selectFile.name);
      this._onSelectFile.emit(this._selectFile);
 
+     //console.log("changeFale--_selectFile--update-file--"+this._selectFile.name);
+  }
 
   }
 

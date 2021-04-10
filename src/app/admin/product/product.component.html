@@ -1,0 +1,407 @@
+<div class="grid-container-menu" style="background-color: blueviolet">
+  <div class="btn-danger text-center item-menu-1" routerLink="/admin">
+    модуль admin
+  </div>
+
+  <div class="btn-warning text-center item-menu-2" (click)="cancel()">
+    id(
+    <span class="text-primary"> {{ _selectedKagalog.id }}</span
+    >)
+    {{ _selectedKagalog.name }}
+  </div>
+
+  <div
+    class="btn item-menu-3"
+    (click)="addModel()"
+    [style.display]="_flagDisplayAddButton ? 'block' : 'none'"
+  >
+    <img src="./../../../assets/icon/add-button.png" height="25" />
+  </div>
+</div>
+<!--- Output Error-->
+
+<div name="outputError"  [style.display]="_errorUotput== true ? 'block' : 'none'"  class="alert alert-danger p-1 " role="alert">{{_error}}</div>
+
+<!-- template ngSwitch  ----------->
+<div [ngSwitch]="_flagViewMode">
+  <ng-template ngSwitchDefault>
+    <div
+      [ngClass]="{
+        'grid-container2': _flagPanel2,
+        'grid-container1': _flagPanel1
+      }"
+    >
+      <div class="bg-primary" (click)="ViwePanel()">
+        <div class="bg-warning" [ngClass]="{ hiden: _flagKatalogHiden }">
+          <ul class="nav flex-column">
+            <li
+              *ngFor="let item of _katalogs"
+              [class.active]="item == _selectedKagalog"
+              class="nav-item"
+              (click)="changeKagalog(item)"
+            >
+              {{ item.name }}
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="grid-sub-container-ms grid-sub-container">
+        <div>id</div>
+        <div>Name</div>
+        <div>Price</div>
+        <div class="hiden-description">descripstion</div>
+        <div>images</div>
+
+        <!-- start model view-->
+        <ng-template ngFor let-product [ngForOf]="_models" let-i="index">
+          <div
+            [ngClass]="{ 'row-grid': i % 2 == 0 }"
+            (click)="changeProduct(product)"
+          >
+            {{ product.id }}
+          </div>
+          <div
+            [ngClass]="{ 'row-grid': i % 2 == 0 }"
+            (click)="changeProduct(product)"
+          >
+            {{ product.name }}
+          </div>
+          <div
+            [ngClass]="{ 'row-grid': i % 2 == 0 }"
+            (click)="changeProduct(product)"
+          >
+            {{ product.price }}
+          </div>
+          <div
+            class="hiden-description"
+            [ngClass]="{ 'row-grid': i % 2 == 0 }"
+            (click)="changeProduct(product)"
+          >
+            {{ product.description }}
+          </div>
+          <div [ngClass]="{ 'row-grid': i % 2 == 0 }" *ngIf="product.image" > <img height="38" src='{{_url_img}}{{product.image  }}' ></div>
+          <div [ngClass]="{ 'row-grid': i % 2 == 0 }" *ngIf="!product.image" > <img height="38" src='{{_url_img}}not_found.png' ></div>
+
+
+
+
+
+        </ng-template>
+        <!-- end  model view-->
+
+
+
+      </div>
+    </div>
+
+    <!----------------- create end-->
+  </ng-template>
+  <ng-template ngSwitchCase="create">
+    <div class="create">
+      <!---------------------------create start-->
+ 
+      <!-------------------edit-create bigin---++++++++-->
+
+      <div class="card">
+        <div class="card-body">
+          <h4 class="card-title text-center">Создать Элемент</h4>
+          <!-- begin CKedit5------------------------------------->
+          <div
+            class="input-group float-right input-group-sm d-flex justify-content-end"
+          >
+            <div class="input-group-prepend">
+              <div class="input-group-text">
+                <input type="checkbox" aria-label="CKedit5" />
+              </div>
+            </div>
+            <div class="input-group-prepend">
+              <span class="input-group-text">CKedit5</span>
+            </div>
+          </div>
+          <!-- end --  CKedit5------------------------------------->
+
+          <!-- begin edit  card ------------------------------------->
+
+          <div class="input-group input-group-sm mb-3">
+            <div class="input-group-prepend">
+              <span class="input-group-text">id</span>
+            </div>
+            <div class="input-group-prepend">
+              <span class="input-group-text">( {{ _selectedProduct.id }})</span>
+            </div>
+          </div>
+
+          <div class="input-group input-group-sm mb-3">
+            <div class="input-group-prepend">
+              <span class="input-group-text">Католог</span>
+            </div>
+            <div class="input-group-prepend">
+              <span class="input-group-text"
+                >({{ _selectedKagalog.name }})</span
+              >
+            </div>
+          </div>
+          <!-- idTypeProduct begin -->
+          <div class="input-group input-group-sm mb-3">
+            <div class="input-group-prepend">
+              <span class="input-group-text">Тип</span>
+            </div>
+            <div class="input-group-prepend dropdown">
+
+
+              <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+                ({{ _selectedTypeProduct.name }})
+              </button>
+              <div class="dropdown-menu">
+                <li  (click)="changeTypeProduct(item)"  *ngFor="let item of _typeProducts">{{item.name}}</li>
+              </div>
+            </div>
+          </div>
+          <!--------------------------->
+
+          <!-- idTypeProduct end-->
+
+          <div class="input-group input-group-sm mb-3">
+            <div class="input-group-prepend ">
+              <span class="input-group-text ">Название</span>
+            </div>
+            <input
+              type="text"
+              class="form-control"
+              name="name"
+              #name="ngModel"
+              required
+              [(ngModel)]="_selectedProduct.name"
+              placeholder="Название"
+            />
+
+            <div [hidden]="name.valid || name.untouched" class="alert alert-danger p-1">
+             !
+            </div>
+          </div>
+
+          <!----------                               end name model  -->
+
+          <div class="input-group input-group-sm mb-3">
+            <div class="input-group-prepend">
+              <span class="input-group-text">Цена</span>
+            </div>
+            <input
+              type="text"
+              class="form-control"
+              name="price"
+              #price="ngModel"
+              required pattern="[0-9]{1,}"
+              [(ngModel)]="_selectedProduct.price"
+              placeholder="Цена"
+            />
+            <div [hidden]="price.valid || price.untouched" class="alert alert-danger p-1">
+              !
+            </div>
+          </div>
+
+          <!--            end Price-->
+
+          <div class="input-group input-group-sm mb-3">
+            <div class="input-group-prepend">
+              <span class="input-group-text">Торговая наценка</span>
+            </div>
+            <input
+              type="text"
+              class="form-control"
+              name="markup"
+              #markup="ngModel"
+              required pattern="[0-9]{1,}"
+              [(ngModel)]="_selectedProduct.markup"
+              placeholder="Торговая наценка"
+            />
+            <div [hidden]="markup.valid || markup.untouched" class="alert alert-danger p-1">
+             !
+            </div>
+          </div>
+
+          <!------------  end Markup  ------------------------>
+          <div class="form-group">
+            <label>
+              <span class="input-group-text">описание товара</span></label
+            >
+            <textarea
+              [(ngModel)]="_selectedProduct.description"
+              placeholder="описание товара"
+              class="form-control"
+              rows="3"
+            ></textarea>
+          </div>
+
+          <!----------------------------------------------------->
+          <div class="form-group">
+            <label> <span class="input-group-text">Фото</span></label>
+
+            <div class="form-control">
+              <app-upload-files
+                (_onSelectFile)="onSetFilePhoto($event)"
+              ></app-upload-files>
+            </div>
+          </div>
+          <div class="d-flex justify-content-center">
+            <img
+              [src]="_previewUrl"
+              [style.display]="_flagPhoto == true ? 'block' : 'none'"
+              class="img-wrap mb-3"
+            />
+          </div>
+        </div>
+      </div>
+
+      <!---------------          -->
+
+      <div class="d-flex justify-content-center">
+        <div class="btn-group text-center" role="group">
+          <button name="saveButton"  [disabled]="name.invalid || price.invalid ||markup.invalid||_imgInvalid"  class="btn btn-sm btn-success" (click)="saveModel()">
+            Сохранить
+          </button>
+
+          <button class="btn btn-sm btn-warning" (click)="cancel()">
+            Отмена
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- end edit  ------------------->
+  </ng-template>
+
+  <ng-template ngSwitchCase="edit">
+    <div class="edit">
+      <div class="card">
+        <div class="card-body">
+          <h4 class="card-title text-center">Редактировать элемент</h4>
+          <!-- begin CKedit5------------------------------------->
+          <div
+            class="input-group float-right input-group-sm d-flex justify-content-end"
+          >
+            <div class="input-group-prepend">
+              <div class="input-group-text">
+                <input type="checkbox" aria-label="CKedit5" />
+              </div>
+            </div>
+            <div class="input-group-prepend">
+              <span class="input-group-text">CKedit5</span>
+            </div>
+          </div>
+          <!-- end --  CKedit5------------------------------------->
+
+          <!-- begin edit  card ------------------------------------->
+
+          <div class="input-group input-group-sm mb-3">
+            <div class="input-group-prepend">
+              <span class="input-group-text">id</span>
+            </div>
+            <div class="input-group-prepend">
+              <span class="input-group-text">( {{ _selectedProduct.id }})</span>
+            </div>
+          </div>
+
+          <div class="input-group input-group-sm mb-3">
+            <div class="input-group-prepend">
+              <span class="input-group-text">Католог</span>
+            </div>
+            <div class="input-group-prepend">
+              <span class="input-group-text"
+                >({{ _selectedKagalog.name }})</span
+              >
+            </div>
+          </div>
+
+          <div class="input-group input-group-sm mb-3">
+            <div class="input-group-prepend">
+              <span class="input-group-text">Название</span>
+            </div>
+            <input
+              type="text"
+              class="form-control"
+              required
+              [(ngModel)]="_selectedProduct.name"
+              placeholder="Название"
+            />
+          </div>
+
+          <div class="input-group input-group-sm mb-3">
+            <div class="input-group-prepend">
+              <span class="input-group-text">Цена</span>
+            </div>
+            <input
+              type="text"
+              class="form-control"
+              required pattern="[0-9]"
+              [(ngModel)]="_selectedProduct.price"
+              placeholder="Цена"
+            />
+          </div>
+
+          <div class="input-group input-group-sm mb-3">
+            <div class="input-group-prepend">
+              <span class="input-group-text">Торговая наценка</span>
+            </div>
+            <input
+              type="text"
+              class="form-control"
+              required pattern="[0-9]"
+              [(ngModel)]="_selectedProduct.markup"
+              placeholder="Торговая наценка"
+            />
+          </div>
+
+          <!------------------------------------>
+          <div class="form-group">
+            <label>
+              <span class="input-group-text">описание товара</span></label
+            >
+            <textarea
+              [(ngModel)]="_selectedProduct.description"
+              placeholder="описание товара"
+              class="form-control"
+              rows="3"
+            ></textarea>
+          </div>
+
+          <!----------------------------------------------------->
+          <div class="form-group">
+            <label> <span class="input-group-text">Фото</span></label>
+
+            <div class="form-control">
+              <app-upload-files
+                (_onSelectFile)="onSetFilePhoto($event)"
+              ></app-upload-files>
+            </div>
+          </div>
+          <div class="d-flex justify-content-center">
+            <img
+              [src]="_previewUrl"
+              [style.display]="_flagPhoto == true ? 'block' : 'none'"
+              class="img-wrap mb-3"
+            />
+          </div>
+
+          <!---------------          -->
+
+          <div class="d-flex justify-content-center">
+            <div class="btn-group text-center" role="group">
+              <button class="btn btn-sm btn-success" (click)="saveModel()">
+                Сохранить
+              </button>
+              <button class="btn btn-sm btn-danger" (click)="deleteModel()">
+                Удалить
+              </button>
+              <button class="btn btn-sm btn-warning" (click)="cancel()">
+                Отмена
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- end edit  ------------------->
+  </ng-template>
+</div>
