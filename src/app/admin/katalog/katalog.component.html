@@ -1,5 +1,7 @@
 <div class="row">
-<div class="btn-danger col-sm-2 text-center" routerLink="/admin" > модуль admin</div>
+  <div class="btn-danger col-sm-2 text-center" routerLink="/admin">
+    модуль admin
+  </div>
 </div>
 <div [ngSwitch]="_flagViewMode">
   <ng-template ngSwitchDefault>
@@ -7,14 +9,13 @@
       <div class="grid-container">
         <button
           *ngFor="let item of _katalogs"
-          class="btn "
+          class="btn"
           [class.active]="item == _selectedKagalog"
           (click)="changeCategory(item)"
         >
-        <span
-            class="text-primary rounded-circle bg-warning p-2"
-
-          >{{item.id}}</span>
+          <span class="text-primary rounded-circle bg-warning p-2">{{
+            item.id
+          }}</span>
           {{ item.name }}
         </button>
         <button class="btn" (click)="addItem()">
@@ -27,13 +28,24 @@
   <ng-template ngSwitchCase="create">
     <div class="create">
       <p>Создать Элемент</p>
-      <p>{{ _selectedKagalog.name }}</p>
-      <input [(ngModel)]="_selectedKagalog.name" />
-      <div></div>
-      <button class="btn btn-sm btn-success" (click)="saveItem()">
-        Сохранить
-      </button>
-      <button class="btn btn-sm btn-warning" (click)="cancel()">Отмена</button>
+
+      <input
+        type="text"
+        class="form-control"
+        #idCreate
+        [(ngModel)]="_selectedKagalog.name"
+       autofocus
+      />
+      {{idCreate.focus()}}
+
+      <div class="btn-group" role="group">
+        <button class="btn btn-sm btn-success" (click)="saveItem()">
+          Сохранить
+        </button>
+        <button class="btn btn-sm btn-warning" (click)="cancel()">
+          Отмена
+        </button>
+      </div>
     </div>
   </ng-template>
 
@@ -45,9 +57,14 @@
           <img src="./../../../assets/icon/add-button.png" height="25" />
         </button>
       </div>
-      <p>Редактировать  Элемент</p>
-      <input [(ngModel)]="_selectedKagalog.name" />
-      <div cclass="btn-group" role="group">
+      <p>Редактировать Элемент</p>
+      <input
+        type="text"
+        class="form-control"
+        [(ngModel)]="_selectedKagalog.name"
+
+      />
+      <div class="btn-group" role="group">
         <button class="btn btn-sm btn-success" (click)="saveItem()">
           Сохранить
         </button>

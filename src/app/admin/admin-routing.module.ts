@@ -1,13 +1,16 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
+import { from } from 'rxjs';
 import{AdminComponent} from './admin/admin.component';
 import{KatalogComponent} from './katalog/katalog.component';
 import{ProductComponent} from './product/product.component';
+import{ItemProductComponent} from './item-product/item-product.component'
 
 const routes: Routes = [
   {path:'',component:AdminComponent},
   {path:'katalog',component:KatalogComponent},
-  {path:'model',component:ProductComponent}
+  {path:'product',component:ProductComponent},
+  {path:'item-product',component:ItemProductComponent}
 ];
 
 @NgModule({

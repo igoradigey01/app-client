@@ -15,7 +15,7 @@ import { environment } from '../../../environments/environment';
 export class ProductComponent implements OnInit {
   _products: Product[] = null; //
  // _selectedProducts: Product[] = null;
-  _url_img = environment.imgHost;
+  _url_img = this._repository.GetUrlImg();
 
   _katalogName:string='';
   _katalogs:Katalog[]=null;

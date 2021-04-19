@@ -9,7 +9,8 @@ import { NomenclatureComponent } from './nomenclature/nomenclature.component';
 import { AdminComponent } from './admin/admin.component';
 import{FormsModule} from '@angular/forms';
 import { ProductComponent } from './product/product.component';
-import { UploadFilesComponent } from './upload-files/upload-files.component';;
+import { UploadFilesComponent } from './upload-files/upload-files.component';
+import { ItemProductComponent } from './item-product/item-product.component';;
 
 
 @NgModule({
@@ -18,7 +19,8 @@ import { UploadFilesComponent } from './upload-files/upload-files.component';;
     NomenclatureComponent,
     AdminComponent,
     ProductComponent,
-    UploadFilesComponent
+    UploadFilesComponent,
+    ItemProductComponent
     ],
   imports: [
     CommonModule,

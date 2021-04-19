@@ -13,14 +13,14 @@
   <div
     class="btn item-menu-3"
     (click)="addModel()"
-    [style.display]="_flagDisplayAddButton ? 'block' : 'none'"
+    [style.display]="_flagDisplayAddButton ?  'block':'none'  "
   >
     <img src="./../../../assets/icon/add-button.png" height="25" />
   </div>
 </div>
 <!--- Output Error-->
 
-<div name="outputError"  [style.display]="_errorUotput== true ? 'block' : 'none'"  class="alert alert-danger p-1 " role="alert">{{_error}}</div>
+<div name="outputError"  [style.display]="_errorUotput ? 'block' : 'none'"  class="alert alert-danger p-1 " role="alert">{{_error}}</div>
 
 <!-- template ngSwitch  ----------->
 <div [ngSwitch]="_flagViewMode">
@@ -54,13 +54,14 @@
         <div>images</div>
 
         <!-- start model view-->
-        <ng-template ngFor let-product [ngForOf]="_models" let-i="index">
+        <ng-template ngFor let-product [ngForOf]="_products" let-i="index">
           <div
             [ngClass]="{ 'row-grid': i % 2 == 0 }"
             (click)="changeProduct(product)"
           >
             {{ product.id }}
           </div>
+         
           <div
             [ngClass]="{ 'row-grid': i % 2 == 0 }"
             (click)="changeProduct(product)"
@@ -100,7 +101,7 @@
   <ng-template ngSwitchCase="create">
     <div class="create">
       <!---------------------------create start-->
- 
+
       <!-------------------edit-create bigin---++++++++-->
 
       <div class="card">
@@ -269,7 +270,7 @@
       </div>
     </div>
 
-    <!-- end edit  ------------------->
+    <!-- end   ------------------->
   </ng-template>
 
   <ng-template ngSwitchCase="edit">
@@ -313,6 +314,25 @@
               >
             </div>
           </div>
+            <!--------------          -->
+
+
+           <!-- idTypeProduct begin -->
+           <div class="input-group input-group-sm mb-3">
+            <div class="input-group-prepend">
+              <span class="input-group-text">Тип</span>
+            </div>
+            <div class="input-group-prepend dropdown">
+
+              <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+                ({{ _selectedTypeProduct.name }})
+              </button>
+              <div class="dropdown-menu">
+                <li  (click)="changeTypeProduct(item)"  *ngFor="let item of _typeProducts">{{item.name}}</li>
+              </div>
+            </div>
+          </div>
+          <!--------------------------->
 
           <div class="input-group input-group-sm mb-3">
             <div class="input-group-prepend">

@@ -18,6 +18,10 @@ export class ProductDataService {
     return environment.apiLocalHost + '/' + this._controllerPath;
   }
 
+  GetUrlImg():string{
+    return environment.imgHost;
+  }
+
   GetUrlKatalog(): string {
     return environment.apiLocalHost + '/' + this._controllerKatalogPath;
   }
@@ -27,28 +31,23 @@ export class ProductDataService {
   }
 
   constructor(private http: HttpClient) {}
+
   //-----------------------
   GetKatalogs(): Observable<Katalog[]> {
     //  console.log("DataServise---ProductType-test")
     return this.http.get<Katalog[]>(this.GetUrlKatalog());
   }
+
   //-----------------------
   GetTypeProduct():Observable<TypeProduct[]>{
     return this.http.get<TypeProduct[]>(this.GetUrlTypeProduct());
   }
+
   //-------------------
   GetProducts(idKatalog: number): Observable<Product[]> {
     return this.http.get<Product[]>(this.GetUrl() + '/' + idKatalog);
   }
-/*
-  GetKatalog(idKatalog: number): Observable<Katalog[]> {
-    this.GetKatalogs().pipe(
-      map((katalogs) => {
-        katalogs.filter((k) => k.id === idKatalog);
-      })
-    );
-  }
-*/
+
   //-----------------------
   CreateProduct(item: Product) {
     // console.log("CreateKatalog --post"+item.id+"--"+item.name);
@@ -66,12 +65,23 @@ export class ProductDataService {
     });
     return this.http.post(this.GetUrl(), formData);
   }
+
   //-------------
   UpdateProduct(item: Product) {
     //  console.log('UpdateModel(item:Model)--put' + item.id + '--' + item.name);
+    const formData = new FormData();
+    if (item.photo != null) {
+      // console.log('photo item.photo.name' + item.photo.name);
 
-    return this.http.put(this.GetUrl() + '/' + item.id, item);
+      formData.append(item.photo.name, item.photo);
+    }
+    Object.keys(item).forEach((key) => {
+      console.log(key + '' + item[key]);
+      if (key != 'photo') formData.append(key, item[key]);
+    });
+    return this.http.put(this.GetUrl() + '/' + item.id, formData);
   }
+
   //--------------------
   DeleteProduct(id: number) {
     // console.log('DeleteModel --delete--' + id);

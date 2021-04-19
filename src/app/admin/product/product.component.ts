@@ -7,7 +7,7 @@ import {environment} from '../../../environments/environment'
 
 
 @Component({
-  selector: 'app-model',
+  selector: 'app-product',
   templateUrl: './product.component.html',
   styleUrls: ['./product.component.css'],
   providers: [ProductDataService]
@@ -20,7 +20,7 @@ export class ProductComponent implements OnInit {
   _imgInvalid:boolean=true;
 
 
-  _models: Product[] = [new Product(-1, '', 0, -1, -1, -1,'', null)];
+  _products: Product[] = [new Product(-1, '', 0, -1, -1, -1,'', null)];
   _flagPanel1: boolean = true;
   _flagPanel2: boolean = false;
   _flagKatalogHiden = false;
@@ -35,7 +35,7 @@ export class ProductComponent implements OnInit {
   _previewUrl: any = null;
   _flagPhoto:boolean=false;
 
-  _url_img=environment.imgHost;
+  _url_img=this._repository.GetUrlImg();
 
   constructor(private _repository: ProductDataService) {}
 
@@ -58,14 +58,24 @@ export class ProductComponent implements OnInit {
   }
 
   changeTypeProduct(item?: TypeProduct){
-    this._selectedProduct.idTypeProduct=item.id;
+  //  this._selectedProduct.idTypeProduct=item.id;
+  console.log(item.id+'----'+item.name);
     this._selectedTypeProduct=item;
   }
 
 
   changeProduct(item?: Product) {
-    this._selectedProduct = item;
+   // console.log(item.idTypeProduct+'--'+item.idKatalog+'--'+item.id+'--'+item.image+'--'+item.photo);
+        this._selectedProduct=item;
+   // this._selectedProduct = this._products.find(x=>x.id==item.id);
+   // console.log("_selectedProduct--"+this._selectedProduct.id+'---TypeProd'+this._selectedProduct.typeProductId);
+        this._selectedTypeProduct=this._typeProducts.find(x=>x.id==this._selectedProduct.typeProductId);
+
+
     this._flagViewMode = 'edit';
+    this._flagPhoto = true;
+    this._previewUrl=this._url_img+this._selectedProduct.image;
+   // this._selectedProduct.idTypeProduct-------------------------------------
   }
 
   addModel() {
@@ -74,22 +84,60 @@ export class ProductComponent implements OnInit {
     this._flagViewMode = 'create';
   }
   saveModel() {
-    this._selectedProduct.idKatalog = this._selectedKagalog.id;
+    if(this. _flagViewMode==="create"){
+    this._selectedProduct.katalogId = this._selectedKagalog.id;
+    this._selectedProduct.typeProductId=this._selectedTypeProduct.id;
     this._selectedProduct.photo = this._dataFile;
     this._errorUotput=true;
+
     if(this._selectedProduct.photo==null){
       this._error="Фото невыбрано!!";
       return;
     }
+
     this._repository.CreateProduct(this._selectedProduct).subscribe((data) => {
       this._error='';
       this._errorUotput=false;
 
       this.cancel();//15.03.21
 
+
     },(err)=>{this._error=err.error;console.log(err);this._errorUotput=true;}
 
     );
+  }
+  else{
+
+
+      this._selectedProduct.katalogId = this._selectedKagalog.id;
+      this._selectedProduct.typeProductId=this._selectedTypeProduct.id;
+      this._selectedProduct.photo = this._dataFile;
+      this._errorUotput=true;
+      /*
+      if(this._selectedProduct.photo==null){
+        this._error="Фото невыбрано!!";
+        return;
+      }
+      */
+      // ---------SEND DATA TO SERVER----------------
+
+      this._repository.UpdateProduct(this._selectedProduct).subscribe((data) => {
+        this._error='';
+        this._errorUotput=false;
+
+        this.cancel();//15.03.21
+
+
+      },(err)=>{this._error=err.error;console.log(err);this._errorUotput=true;}
+
+      );
+
+   // console.log(" throwError('not impliment exeption');")
+
+    // throwError("not impliment exeption");
+
+
+  }
     // throwError("not impliment exeption");
    // this.reload(this._selectedKagalog.id);
 
@@ -113,7 +161,7 @@ export class ProductComponent implements OnInit {
 
   // перезагрузить данные подКаталога по id
   load(idKatalog:number){
-    this._repository.GetProducts(idKatalog).subscribe((d) => {this._models = d;this._error='';this._errorUotput=false;},
+    this._repository.GetProducts(idKatalog).subscribe((d) => {this._products = d;this._error='';this._errorUotput=false;},
     (err)=>{this._error=err.error;console.log(err);this._errorUotput=true;}
     );//13.03.21
 
