@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { from, throwError } from 'rxjs';
+import {  throwError } from 'rxjs';
 import { ProductDataService } from '../../data-model/product-data.servisce';
 import { Katalog, Product, TypeProduct } from '../../data-model/class-data.model';
-import {environment} from '../../../environments/environment'
+
 
 
 
