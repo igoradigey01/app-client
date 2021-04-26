@@ -1,6 +1,6 @@
-import { Component, OnInit, Input,Output } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import {Observable,of, Observer, from ,interval, Subscription} from 'rxjs';
-import { ObserveOnOperator } from 'rxjs/internal/operators/observeOn';
+
 
 @Component({
   selector: 'app-bg-carousel',

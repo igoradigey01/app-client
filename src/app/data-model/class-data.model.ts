@@ -27,11 +27,12 @@ export class Product {
   ) {}
 }
 
-export class ItemProduct{
+export class Image{
 
   constructor (
     public id:number,
-    public name:string
+    public name:string,
+    public productId:number
   ){}
 
 }

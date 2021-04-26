@@ -22,7 +22,7 @@ export class KatalogDataService {
   ) { }
 
     GetKatalogs():Observable<Katalog[]>{
-    //  console.log("DataServise---ProductType-test")
+      console.log(" GetKatalogs()--get");
       return this.http.get<Katalog[]> (this.GetUrl());
   }
 

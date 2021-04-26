@@ -10,7 +10,8 @@ import { AdminComponent } from './admin/admin.component';
 import{FormsModule} from '@angular/forms';
 import { ProductComponent } from './product/product.component';
 import { UploadFilesComponent } from './upload-files/upload-files.component';
-import { ItemProductComponent } from './item-product/item-product.component';;
+import { ItemProductComponent } from './item-product/item-product.component';
+import { ProductTypeComponent } from './product-type/product-type.component';;
 
 
 @NgModule({
@@ -20,7 +21,8 @@ import { ItemProductComponent } from './item-product/item-product.component';;
     AdminComponent,
     ProductComponent,
     UploadFilesComponent,
-    ItemProductComponent
+    ItemProductComponent,
+    ProductTypeComponent
     ],
   imports: [
     CommonModule,
