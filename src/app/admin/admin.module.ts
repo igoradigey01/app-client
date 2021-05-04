@@ -11,7 +11,12 @@ import{FormsModule} from '@angular/forms';
 import { ProductComponent } from './product/product.component';
 import { UploadFilesComponent } from './upload-files/upload-files.component';
 import { ItemProductComponent } from './item-product/item-product.component';
-import { ProductTypeComponent } from './product-type/product-type.component';;
+import { ProductTypeComponent } from './product-type/product-type.component';
+import { InfoComponent } from './info/info.component';
+import {LazyAdminServiceModule} from '../data-model/lazy-admin-service/lazy-admin-service.module'
+
+import { CropUploadFilesComponent } from './crop-upload-files/crop-upload-files.component';
+import { ImageCropperModule } from 'ngx-image-cropper';//03.05.21
 
 
 @NgModule({
@@ -22,12 +27,16 @@ import { ProductTypeComponent } from './product-type/product-type.component';;
     ProductComponent,
     UploadFilesComponent,
     ItemProductComponent,
-    ProductTypeComponent
+    ProductTypeComponent,
+    InfoComponent,
+    CropUploadFilesComponent
     ],
   imports: [
     CommonModule,
     AdminRoutingModule,
-    FormsModule
+    FormsModule,
+    LazyAdminServiceModule,
+    ImageCropperModule
   ]
 })
 export class AdminModule { }

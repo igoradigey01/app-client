@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import {  throwError } from 'rxjs';
+import {   throwError } from 'rxjs';
 import { ProductDataService } from '../../data-model/product-data.servisce';
 import { Katalog, Product, TypeProduct } from '../../data-model/class-data.model';
+import {} from '../upload-files/upload-files.component';
 
 
 
@@ -9,8 +10,8 @@ import { Katalog, Product, TypeProduct } from '../../data-model/class-data.model
 @Component({
   selector: 'app-product',
   templateUrl: './product.component.html',
-  styleUrls: ['./product.component.css'],
-  providers: [ProductDataService]
+  styleUrls: ['./product.component.css']
+
 })
 export class ProductComponent implements OnInit {
   _katalogs: Katalog[];
@@ -20,7 +21,7 @@ export class ProductComponent implements OnInit {
   _imgInvalid:boolean=true;
 
 
-  _products: Product[] = [new Product(-1, '', 0, -1, -1, -1,'', null)];
+  _products: Product[] = [new Product(-1, '', -1, -1, -1, -1,'', null)];
   _flagPanel1: boolean = true;
   _flagPanel2: boolean = false;
   _flagKatalogHiden = false;
@@ -67,15 +68,27 @@ export class ProductComponent implements OnInit {
   changeProduct(item?: Product) {
    // console.log(item.idTypeProduct+'--'+item.idKatalog+'--'+item.id+'--'+item.image+'--'+item.photo);
         this._selectedProduct=item;
+        console.log("----id Katalog--"+this._selectedProduct.katalogId);
+        if(this._selectedProduct.katalogId==-1){
+          this._errorUotput=true;
+          this._error="Каталог не Выбран!!"
+          console.log('this._error="Каталог не Выбран!!"------------01.05.21--');
+          this.cancel();
+
+        }
+        else{
    // this._selectedProduct = this._products.find(x=>x.id==item.id);
    // console.log("_selectedProduct--"+this._selectedProduct.id+'---TypeProd'+this._selectedProduct.typeProductId);
-        this._selectedTypeProduct=this._typeProducts.find(x=>x.id==this._selectedProduct.typeProductId);
+          this._error='';
+          this._errorUotput=false;
+   this._selectedTypeProduct=this._typeProducts.find(x=>x.id==this._selectedProduct.typeProductId);
 
 
     this._flagViewMode = 'edit';
     this._flagPhoto = true;
     this._previewUrl=this._url_img+this._selectedProduct.image;
    // this._selectedProduct.idTypeProduct-------------------------------------
+        }
   }
 
   addModel() {
@@ -95,10 +108,16 @@ export class ProductComponent implements OnInit {
       return;
     }
 
+    //------------------------- 28.04.21---------------------
+
     this._repository.CreateProduct(this._selectedProduct).subscribe((data) => {
       this._error='';
       this._errorUotput=false;
 
+    //  this._products.push().
+     let  d=data as Product;
+        console.log("cteateProuct metod-- d.name--"+d.name);
+        this._products.push(d);
       this.cancel();//15.03.21
 
 
@@ -146,6 +165,7 @@ export class ProductComponent implements OnInit {
   }
 
   deleteModel() {
+   console.log("----throwError('not impliment exeption');-----");
     throwError('not impliment exeption');
   }
   cancel() {
@@ -154,6 +174,8 @@ export class ProductComponent implements OnInit {
     //this._dataFile=null;   19.12.20       ------------&&&????
     this._flagPhoto=false;
     this._imgInvalid=true;
+   // this._flagKatalogHiden=false;
+   this.ViwePanel();
 
   //  this.changeKagalog(this._selectedKagalog);
 

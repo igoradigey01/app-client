@@ -12,6 +12,13 @@ export class TypeProduct {
     public description: string
   ) {}
 }
+export  class VertionInfo{
+  constructor(
+ public v:string,
+ public  description:string
+  ){}
+}
+
 // конечное представление  продукта Камод-лдсп-венги Камод-мдф-венги Кровать-2000*1400-дубСанома
 export class Product {
   constructor(
@@ -32,7 +39,8 @@ export class Image{
   constructor (
     public id:number,
     public name:string,
-    public productId:number
+    public productId:number,
+    public photo?: File
   ){}
 
 }

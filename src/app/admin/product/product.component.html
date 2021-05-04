@@ -13,14 +13,21 @@
   <div
     class="btn item-menu-3"
     (click)="addModel()"
-    [style.display]="_flagDisplayAddButton ?  'block':'none'  "
+    [style.display]="_flagDisplayAddButton ? 'block' : 'none'"
   >
     <img src="./../../../assets/icon/add-button.png" height="25" />
   </div>
 </div>
 <!--- Output Error-->
 
-<div name="outputError"  [style.display]="_errorUotput ? 'block' : 'none'"  class="alert alert-danger p-1 " role="alert">{{_error}}</div>
+<div
+  name="outputError"
+  [style.display]="_errorUotput ? 'block' : 'none'"
+  class="alert alert-danger p-1"
+  role="alert"
+>
+  {{ _error }}
+</div>
 
 <!-- template ngSwitch  ----------->
 <div [ngSwitch]="_flagViewMode">
@@ -61,7 +68,7 @@
           >
             {{ product.id }}
           </div>
-         
+
           <div
             [ngClass]="{ 'row-grid': i % 2 == 0 }"
             (click)="changeProduct(product)"
@@ -81,18 +88,14 @@
           >
             {{ product.description }}
           </div>
-          <div [ngClass]="{ 'row-grid': i % 2 == 0 }" *ngIf="product.image" > <img height="38" src='{{_url_img}}{{product.image  }}' ></div>
-          <div [ngClass]="{ 'row-grid': i % 2 == 0 }" *ngIf="!product.image" > <img height="38" src='{{_url_img}}not_found.png' ></div>
-
-
-
-
-
+          <div [ngClass]="{ 'row-grid': i % 2 == 0 }" *ngIf="product.image">
+            <img height="38" src="{{ _url_img }}{{ product.image }}" />
+          </div>
+          <div [ngClass]="{ 'row-grid': i % 2 == 0 }" *ngIf="!product.image">
+            <img height="38" src="{{ _url_img }}not_found.png" />
+          </div>
         </ng-template>
         <!-- end  model view-->
-
-
-
       </div>
     </div>
 
@@ -149,13 +152,20 @@
               <span class="input-group-text">Тип</span>
             </div>
             <div class="input-group-prepend dropdown">
-
-
-              <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+              <button
+                type="button"
+                class="btn btn-primary dropdown-toggle"
+                data-toggle="dropdown"
+              >
                 ({{ _selectedTypeProduct.name }})
               </button>
               <div class="dropdown-menu">
-                <li  (click)="changeTypeProduct(item)"  *ngFor="let item of _typeProducts">{{item.name}}</li>
+                <li
+                  (click)="changeTypeProduct(item)"
+                  *ngFor="let item of _typeProducts"
+                >
+                  {{ item.name }}
+                </li>
               </div>
             </div>
           </div>
@@ -164,8 +174,8 @@
           <!-- idTypeProduct end-->
 
           <div class="input-group input-group-sm mb-3">
-            <div class="input-group-prepend ">
-              <span class="input-group-text ">Название</span>
+            <div class="input-group-prepend">
+              <span class="input-group-text">Название</span>
             </div>
             <input
               type="text"
@@ -177,8 +187,11 @@
               placeholder="Название"
             />
 
-            <div [hidden]="name.valid || name.untouched" class="alert alert-danger p-1">
-             !
+            <div
+              [hidden]="name.valid || name.untouched"
+              class="alert alert-danger p-1"
+            >
+              !
             </div>
           </div>
 
@@ -193,11 +206,15 @@
               class="form-control"
               name="price"
               #price="ngModel"
-              required pattern="[0-9]{1,}"
+              required
+              pattern="[0-9]{1,}"
               [(ngModel)]="_selectedProduct.price"
               placeholder="Цена"
             />
-            <div [hidden]="price.valid || price.untouched" class="alert alert-danger p-1">
+            <div
+              [hidden]="price.valid || price.untouched"
+              class="alert alert-danger p-1"
+            >
               !
             </div>
           </div>
@@ -213,12 +230,16 @@
               class="form-control"
               name="markup"
               #markup="ngModel"
-              required pattern="[0-9]{1,}"
+              required
+              pattern="[0-9]{1,}"
               [(ngModel)]="_selectedProduct.markup"
               placeholder="Торговая наценка"
             />
-            <div [hidden]="markup.valid || markup.untouched" class="alert alert-danger p-1">
-             !
+            <div
+              [hidden]="markup.valid || markup.untouched"
+              class="alert alert-danger p-1"
+            >
+              !
             </div>
           </div>
 
@@ -259,7 +280,14 @@
 
       <div class="d-flex justify-content-center">
         <div class="btn-group text-center" role="group">
-          <button name="saveButton"  [disabled]="name.invalid || price.invalid ||markup.invalid||_imgInvalid"  class="btn btn-sm btn-success" (click)="saveModel()">
+          <button
+            name="saveButton"
+            [disabled]="
+              name.invalid || price.invalid || markup.invalid || _imgInvalid
+            "
+            class="btn btn-sm btn-success"
+            (click)="saveModel()"
+          >
             Сохранить
           </button>
 
@@ -314,21 +342,28 @@
               >
             </div>
           </div>
-            <!--------------          -->
+          <!--------------          -->
 
-
-           <!-- idTypeProduct begin -->
-           <div class="input-group input-group-sm mb-3">
+          <!-- idTypeProduct begin -->
+          <div class="input-group input-group-sm mb-3">
             <div class="input-group-prepend">
               <span class="input-group-text">Тип</span>
             </div>
             <div class="input-group-prepend dropdown">
-
-              <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+              <button
+                type="button"
+                class="btn btn-primary dropdown-toggle"
+                data-toggle="dropdown"
+              >
                 ({{ _selectedTypeProduct.name }})
               </button>
               <div class="dropdown-menu">
-                <li  (click)="changeTypeProduct(item)"  *ngFor="let item of _typeProducts">{{item.name}}</li>
+                <li
+                  (click)="changeTypeProduct(item)"
+                  *ngFor="let item of _typeProducts"
+                >
+                  {{ item.name }}
+                </li>
               </div>
             </div>
           </div>
@@ -354,7 +389,8 @@
             <input
               type="text"
               class="form-control"
-              required pattern="[0-9]"
+              required
+              pattern="[0-9]"
               [(ngModel)]="_selectedProduct.price"
               placeholder="Цена"
             />
@@ -367,7 +403,8 @@
             <input
               type="text"
               class="form-control"
-              required pattern="[0-9]"
+              required
+              pattern="[0-9]"
               [(ngModel)]="_selectedProduct.markup"
               placeholder="Торговая наценка"
             />

@@ -8,6 +8,8 @@ e2e/
 environments/
 node_modules/
 server/
+# my file
+help.txt
 
 
 

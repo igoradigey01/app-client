@@ -1,0 +1,33 @@
+<div class="container">
+  <div class="row">
+    <input type="file" (change)="changeFale($event)" />
+  </div>
+
+  <div class="row">
+    <div class="col-lg-5">
+      <image-cropper
+        [imageChangedEvent]="imgChangeEvt"
+        [maintainAspectRatio]="false"
+        [resizeToHeight]="750"
+        format="png"
+        (imageCropped)="cropImg($event)"
+        (imageLoaded)="imgLoad()"
+        (cropperReady)="initCropper()"
+        (loadImageFailed)="imgFailed()"
+      >
+      </image-cropper>
+    </div>
+
+    <div class="col-lg-3">
+      <img [src]="cropImgPreview" class="img-fluid" />
+    </div>
+  </div>
+  <div class="row">
+    <div class="btn-group" role="group">
+      <button class="btn btn-sm btn-success" (click)="changeImg()">
+        Сохранить
+      </button>
+      <button class="btn btn-sm btn-warning" (click)="cancel()">Отмена</button>
+    </div>
+  </div>
+</div>

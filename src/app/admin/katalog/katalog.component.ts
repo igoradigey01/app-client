@@ -14,8 +14,8 @@ import {
 @Component({
   selector: 'app-katalog',
   templateUrl: './katalog.component.html',
-  styleUrls: ['./katalog.component.css'],
-  providers: [KatalogDataService],
+  styleUrls: ['./katalog.component.css']
+
 })
 export class KatalogComponent implements OnInit {
   public _selectedKagalog: Katalog = new Katalog(-1, ''); //выбор Kalog item

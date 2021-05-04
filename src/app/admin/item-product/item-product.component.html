@@ -6,9 +6,9 @@
 
   <div class="btn-warning text-center item-menu-2" (click)="cancel()">
     id(
-    <span class="text-primary"> {{  _selectedKagalog.id }}</span
+    <span class="text-primary"> {{ _selectedKagalog.id }}</span
     >)
-    {{  _selectedKagalog.name }}
+    {{ _selectedKagalog.name }}
   </div>
 
   <div
@@ -90,24 +90,19 @@
           >
             {{ product.description }}
           </div>
-          <div [ngClass]="{ 'row-grid': i % 2 == 0 }" *ngIf="product.image" > <img height="38" src='{{_url_img}}{{product.image  }}' ></div>
-          <div [ngClass]="{ 'row-grid': i % 2 == 0 }" *ngIf="!product.image" > <img height="38" src='{{_url_img}}not_found.png' ></div>
-
-
-
-
-
+          <div [ngClass]="{ 'row-grid': i % 2 == 0 }" *ngIf="product.image">
+            <img height="38" src="{{ _url_img }}{{ product.image }}" />
+          </div>
+          <div [ngClass]="{ 'row-grid': i % 2 == 0 }" *ngIf="!product.image">
+            <img height="38" src="{{ _url_img }}not_found.png" />
+          </div>
         </ng-template>
         <!-- end  model view-->
-
-
-
       </div>
     </div>
 
     <!----------------- create end-->
   </ng-template>
-
 
   <ng-template ngSwitchCase="edit">
     <div class="edit">
@@ -120,46 +115,41 @@
 
           <!-- begin edit  card ------------------------------------->
 
+          <!--------------          -->
 
-
-
-            <!--------------          -->
-
-
-           <!-- idTypeProduct begin -->
+          <!-- idTypeProduct begin -->
 
           <!--------------------------->
 
-
-            <div >
-              <span class="input-group-text">{{_selectedProduct.name}}</span>
-            </div>
-
-
-
+          <div>
+            <span class="input-group-text">{{ _selectedProduct.name }}</span>
+          </div>
 
           <!-- Caruosel begin-->
-          <div id="carousel" class="carousel slide  "  >
-
+          <div
+            id="carousel"
+            class="carousel slide"
+            [style.display]="_flagCarouselHiden == true ? 'block' : 'none'"
+          >
             <ol class="carousel-indicators">
-              <ng-container *ngFor="let item of _images;index as i;" >
-                <li *ngIf="i==0;else elseBlok;" (click)="changeImg(i)" [ngClass]="{active:i==_currentIndex}"   >
-
-                </li>
+              <ng-container *ngFor="let item of _images; index as i">
+                <li
+                  *ngIf="i == 0; else elseBlok"
+                  (click)="changeImg(i)"
+                  [ngClass]="{ active: i == _currentIndex }"
+                ></li>
                 <ng-template #elseBlok>
-                  <li (click)="changeImg(i)" [ngClass]="{active:i==_currentIndex}"></li>
-
+                  <li
+                    (click)="changeImg(i)"
+                    [ngClass]="{ active: i == _currentIndex }"
+                  ></li>
                 </ng-template>
-
-
               </ng-container>
-
-
             </ol>
             <div class="carousel-inner">
               <div class="carousel-item active">
                 <img
-                  class="d-block w-100 "
+                  class="d-block w-100"
                   src="{{ _url_img }}{{ _currentImage.name }}"
                   alt="First slide"
                 />
@@ -167,21 +157,25 @@
             </div>
             <!---- end --class carousel-inner-->
             <a class="carousel-control-prev" (click)="Prev()" role="button">
-              <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+              <span
+                class="carousel-control-prev-icon"
+                aria-hidden="true"
+              ></span>
               <span class="sr-only">Previous</span>
             </a>
             <a class="carousel-control-next" (click)="Next()" role="button">
-              <span class="carousel-control-next-icon" aria-hidden="true"></span>
+              <span
+                class="carousel-control-next-icon"
+                aria-hidden="true"
+              ></span>
               <span class="sr-only">Next</span>
             </a>
           </div>
           <!-- Carousel end-->
 
-
-
-          <!---------------------Image Photo Begin-------------------------------->
+          <!---------------------Image Photo Begin----------------------01.05.21---------->
+        <div [style.display]="_flagDisplayAddImgButton ? 'none' : 'block'">
           <div class="form-group">
-           
             <div class="form-control">
               <app-upload-files
                 (_onSelectFile)="onSetFilePhoto($event)"
@@ -195,13 +189,14 @@
               class="img-wrap mb-3"
             />
           </div>
+        </div>
 
           <!---------------   Imge Photo end       -->
 
           <div class="d-flex justify-content-center">
             <div class="btn-group text-center" role="group">
               <button class="btn btn-sm btn-success" (click)="addImg()">
-                <img src="./../../../assets/icon/add-button.png" height="25" />
+               Сохранить
               </button>
 
               <button class="btn btn-sm btn-danger" (click)="deleteImg()">
@@ -219,4 +214,3 @@
   </ng-template>
 </div>
 <!-- Caruosel Beging-->
-

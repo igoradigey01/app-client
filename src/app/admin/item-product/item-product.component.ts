@@ -8,7 +8,7 @@ import { ActivatedRoute } from '@angular/router';
   selector: 'app-item-product',
   templateUrl: './item-product.component.html',
   styleUrls: ['./item-product.component.css'],
-  providers: [ItemProductDataService],
+  
 })
 export class ItemProductComponent implements OnInit {
   _flagDisplayAddImgButton: boolean = false;
@@ -32,7 +32,9 @@ export class ItemProductComponent implements OnInit {
   //--------- begin Carousel pole ------
   _images: Image[] = [new Image(-1, '', -1)];
   _currentImage: Image;
+  _notFoundImage:Image=new Image(-1,'not_found.png',-1);
   _currentIndex: number = 0;
+  _flagCarouselHiden:boolean=false;
 
   // --- end Carousel pole
   _errorUotput: boolean = false;
@@ -44,6 +46,7 @@ export class ItemProductComponent implements OnInit {
   _dataFile: File = null;
   _previewUrl: any = null;
   _flagPhoto:boolean=false;
+  _selectedImage:Image=new Image(-1,'',-1);
   //-----------------------------
   _url_img=this._repository.GetUrlImg();
 
@@ -94,7 +97,28 @@ export class ItemProductComponent implements OnInit {
   }
 
   addImg() {
-    throwError('not impliment exeption');
+    if(this. _flagViewMode==="edit"){
+      this._selectedImage.productId= this._selectedProduct.id;
+
+      this._selectedImage.photo = this._dataFile;
+      this._errorUotput=true;
+
+      if(this._selectedImage.photo==null){
+        this._error="Фото невыбрано!!";
+        return;
+      }
+    }
+    this._repository.AddImage(this._selectedImage).subscribe((data) => {
+      this._error='';
+      this._errorUotput=false;
+
+
+      this.cancel();//15.03.21
+
+
+    },(err)=>{this._error=err.error;console.log(err);this._errorUotput=true;}
+
+    );
   }
 
   deleteImg(){
@@ -108,6 +132,7 @@ export class ItemProductComponent implements OnInit {
       this._images = d;
       this._currentImage = d[0];
     });
+
   }
 
   changeKagalog(item?: Katalog) {
@@ -121,6 +146,7 @@ export class ItemProductComponent implements OnInit {
     this._selectedProduct = item;
     this.GetImages(item.id);
     this._flagViewMode = 'edit';
+    this.IsVisible();
 
   }
 
@@ -130,19 +156,33 @@ export class ItemProductComponent implements OnInit {
     this._currentImage = this._images[this._currentIndex];
     console.log('UpdateImgs()--_currentIndex--' + this._currentIndex);
   }
+   // crarousel isVisible показать скрыть если нет Photo
+  IsVisible(){
+    if(this._currentImage==null||this._currentImage.id==this._notFoundImage.id){
+
+      console.log("IsVisible()-- currentImage==null");
+      this._currentImage=this._notFoundImage;
+
+      this._flagCarouselHiden=true;}
+    else this._flagCarouselHiden=false;
+  }
 
   cancel() {
     this._flagViewMode = 'default';
    // this._products=null;//25.04.21
     //this._selectedProduct=null;//25.04.21
+
     this._images=null; //25.04.21
     this._currentImage=null;
    this._currentIndex= 0;
+
 
     this._previewUrl=null;
     //this._dataFile=null;   19.12.20       ------------&&&????
     this._flagPhoto=false;
     this._imgInvalid=true;
+    console.log("-currentImage is null--"+this._currentImage);
+    this.IsVisible();
   }
   // загрузить данные подКаталога по id
   GetProducts(idKatalog:number){

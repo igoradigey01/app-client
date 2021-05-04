@@ -20,7 +20,8 @@ import{GlobalVar} from './globalVar';
 //----------------------- footer module -----------
 import { FooterModule } from './footer/footer.module';
 import {HeaderModule} from './header/header.module';
-import {ContentModule} from './content/content.module'
+import {ContentModule} from './content/content.module';
+
 
 
 
@@ -35,7 +36,8 @@ import {ContentModule} from './content/content.module'
 @NgModule({
   declarations: [
     AppComponent,
-    PageNotFoundComponent,
+    PageNotFoundComponent
+
 
   ],
   imports: [

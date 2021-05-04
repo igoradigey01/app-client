@@ -3,10 +3,11 @@ import {  Observable } from 'rxjs';
 import {Katalog} from './class-data.model';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../environments/environment';
+import {LazyAdminServiceModule} from './lazy-admin-service/lazy-admin-service.module';
 
-
-
-@Injectable()
+@Injectable(
+  {providedIn:LazyAdminServiceModule}
+)
 export class KatalogDataService {
 
   readonly _controllerPath:string="katalog";
