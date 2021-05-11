@@ -13,7 +13,7 @@ export class ItemProductDataService {
   readonly _controllerItemProductPath: string = 'ProductItem';
   //[Route("api/[controller]/[action]")]--api server
   readonly _controllerItemProdctActionGetPath:string='GetImages'
-  readonly _controllerItemProdctActionAddPath:string='AddImage'
+  readonly _controllerItemProdctActionAddPath:string='CreateImage'
   //----------------------------
   readonly _controllerProductPath: string = 'product';
   readonly _controllerKatalogPath: string = 'katalog';
@@ -54,19 +54,13 @@ export class ItemProductDataService {
   }
 
   AddImage(item:Image){
-     // console.log("CreateKatalog --post"+item.id+"--"+item.name);
-    //let fileToUpload = <File>files[0];
-    console.log("item-product-data AddImage start---")
+
     const formData = new FormData();
-    if (item.photo != null) {
-      // console.log('photo item.photo.name' + item.photo.name);
-
-      formData.append(item.photo.name, item.photo);
-    }
-
+      // photo- base64 string
     Object.keys(item).forEach((key) => {
-      console.log(key + '' + item[key]);
-      if (key != 'photo') formData.append(key, item[key]);
+    //  console.log(key + '' + item[key]);
+      //if (key != 'photo') 04..5.21
+       formData.append(key, item[key]);
     });
     return this.http.post(this.AddUrl(), formData);
 

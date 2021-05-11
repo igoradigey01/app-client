@@ -2,13 +2,13 @@
   <div class="row">
     <input type="file" (change)="changeFale($event)" />
   </div>
-
+ <div [style.display]="_flagViewCropUploadImg ? 'block' : 'none'" >
   <div class="row">
     <div class="col-lg-5">
       <image-cropper
-        [imageChangedEvent]="imgChangeEvt"
+        [imageChangedEvent]="_imgChangeEvt"
         [maintainAspectRatio]="false"
-        [resizeToHeight]="750"
+        [resizeToHeight]="400"
         format="png"
         (imageCropped)="cropImg($event)"
         (imageLoaded)="imgLoad()"
@@ -19,7 +19,7 @@
     </div>
 
     <div class="col-lg-3">
-      <img [src]="cropImgPreview" class="img-fluid" />
+      <img [src]="_cropImgPreview" class="img-fluid" />
     </div>
   </div>
   <div class="row">
@@ -30,4 +30,5 @@
       <button class="btn btn-sm btn-warning" (click)="cancel()">Отмена</button>
     </div>
   </div>
+</div>
 </div>

@@ -1,27 +1,38 @@
 import { Component, OnInit } from '@angular/core';
-import {   throwError } from 'rxjs';
+import { throwError } from 'rxjs';
 import { ProductDataService } from '../../data-model/product-data.servisce';
-import { Katalog, Product, TypeProduct } from '../../data-model/class-data.model';
-import {} from '../upload-files/upload-files.component';
-
-
-
+import {
+  Katalog,
+  Product,
+  TypeProduct,
+  Image,
+} from '../../data-model/class-data.model';
+import { map, filter } from 'rxjs/operators';
+import { promise } from 'selenium-webdriver';
+import { fileURLToPath, URL } from 'url';
 
 @Component({
   selector: 'app-product',
   templateUrl: './product.component.html',
-  styleUrls: ['./product.component.css']
-
+  styleUrls: ['./product.component.css'],
 })
 export class ProductComponent implements OnInit {
+  // jwt statrt
+  private readonly accessTokenName: string = 'access_token';
+  // Получить
+  GetJwt(): string {
+    return localStorage.getItem(this.accessTokenName);
+  }
+
+  //jwt end--
+
   _katalogs: Katalog[];
-  _typeProducts:TypeProduct[];
-  _error:any;
-  _errorUotput:boolean=false; //09.04.21 (true)
-  _imgInvalid:boolean=true;
+  _typeProducts: TypeProduct[];
+  _error: any;
+  _errorUotput: boolean = false; //09.04.21 (true)
+  _flagInvalid: boolean = true;
 
-
-  _products: Product[] = [new Product(-1, '', -1, -1, -1, -1,'', null)];
+  _products: Product[] = [new Product(-1, '', -1, -1, -1, -1, '', null)];
   _flagPanel1: boolean = true;
   _flagPanel2: boolean = false;
   _flagKatalogHiden = false;
@@ -29,20 +40,24 @@ export class ProductComponent implements OnInit {
   _flagDisplayAddButton: boolean = false;
 
   _selectedKagalog: Katalog = new Katalog(-1, '');
-  _selectedTypeProduct:TypeProduct=new TypeProduct(-1,'',null);
-  _selectedProduct: Product= new Product(-1, '', -1, -1,null, null, null);
+  _selectedTypeProduct: TypeProduct = new TypeProduct(-1, '', null);
+  _selectedProduct: Product = new Product(-1, '', -1, -1, null, null, null);
 
-  _dataFile: File = null;
-  _previewUrl: any = null;
-  _flagPhoto:boolean=false;
+  _dataFile: File = null; // неиспльзуется  blob img
+  _previewUrl: any = null; // неиспльзуется  blob img
+  //_selectedImage: Image = new Image(-1, '', -1);
+  _flagBase64: boolean = false;
+  _flagPhoto: boolean = false;
 
-  _url_img=this._repository.GetUrlImg();
+  _url_img = this._repository.GetUrlImg();
 
   constructor(private _repository: ProductDataService) {}
 
   ngOnInit(): void {
     this._repository.GetKatalogs().subscribe((d) => (this._katalogs = d));
-    this._repository.GetTypeProduct().subscribe((d)=>(this._typeProducts=d));
+    this._repository
+      .GetTypeProduct()
+      .subscribe((d) => (this._typeProducts = d));
   }
   // ngClass flags
   ViwePanel() {
@@ -54,41 +69,51 @@ export class ProductComponent implements OnInit {
   changeKagalog(item?: Katalog) {
     this._selectedKagalog = item;
     this._flagDisplayAddButton = true;
-   // this._repository.GetModel(item.id).subscribe((d) => (this._models = d));
-   this.load(item.id);
+    // this._repository.GetModel(item.id).subscribe((d) => (this._models = d));
+    this.load(item.id);
   }
 
-  changeTypeProduct(item?: TypeProduct){
-  //  this._selectedProduct.idTypeProduct=item.id;
-  console.log(item.id+'----'+item.name);
-    this._selectedTypeProduct=item;
+  changeTypeProduct(item?: TypeProduct) {
+    //  this._selectedProduct.idTypeProduct=item.id;
+    console.log(item.id + '----' + item.name);
+    this._selectedTypeProduct = item;
+    this._flagInvalid=false;//-----11.05.21
   }
+  onEditFormChange(){
+    this._flagInvalid=false;
+    console.log("EditProduct ----onchange--event ---")
 
+  }
 
   changeProduct(item?: Product) {
-   // console.log(item.idTypeProduct+'--'+item.idKatalog+'--'+item.id+'--'+item.image+'--'+item.photo);
-        this._selectedProduct=item;
-        console.log("----id Katalog--"+this._selectedProduct.katalogId);
-        if(this._selectedProduct.katalogId==-1){
-          this._errorUotput=true;
-          this._error="Каталог не Выбран!!"
-          console.log('this._error="Каталог не Выбран!!"------------01.05.21--');
-          this.cancel();
+    // console.log(item.idTypeProduct+'--'+item.idKatalog+'--'+item.id+'--'+item.image+'--'+item.photo);
+    this._selectedProduct = item;
+    console.log('----id Katalog--' + this._selectedProduct.katalogId);
+    if (this._selectedProduct.katalogId == -1) {
+      this._errorUotput = true;
+      this._error = 'Каталог не Выбран!!';
+      console.log('this._error="Каталог не Выбран!!"------------01.05.21--');
+      this.cancel();
+    } else {
+      // this._selectedProduct = this._products.find(x=>x.id==item.id);
+      // console.log("_selectedProduct--"+this._selectedProduct.id+'---TypeProd'+this._selectedProduct.typeProductId);
+      this._error = '';
+      this._errorUotput = false;
+      this._selectedTypeProduct = this._typeProducts.find(
+        (x) => x.id == this._selectedProduct.typeProductId
+      );
 
-        }
-        else{
-   // this._selectedProduct = this._products.find(x=>x.id==item.id);
-   // console.log("_selectedProduct--"+this._selectedProduct.id+'---TypeProd'+this._selectedProduct.typeProductId);
-          this._error='';
-          this._errorUotput=false;
-   this._selectedTypeProduct=this._typeProducts.find(x=>x.id==this._selectedProduct.typeProductId);
+      this._flagViewMode = 'edit';
+      this._flagPhoto = true;
+      this._flagBase64 = false;
+      // let url=  this._url_img + this._selectedProduct.image;
+      // this.getPhotoBase64(this._selectedProduct.image);
+      //  this.previewOld();
+      this.getBlobImg(this._selectedProduct.image);
 
-
-    this._flagViewMode = 'edit';
-    this._flagPhoto = true;
-    this._previewUrl=this._url_img+this._selectedProduct.image;
-   // this._selectedProduct.idTypeProduct-------------------------------------
-        }
+      this._flagDisplayAddButton = false;
+      // this._selectedProduct.idTypeProduct-------------------------------------
+    }
   }
 
   addModel() {
@@ -97,41 +122,46 @@ export class ProductComponent implements OnInit {
     this._flagViewMode = 'create';
   }
   saveModel() {
-    if(this. _flagViewMode==="create"){
-    this._selectedProduct.katalogId = this._selectedKagalog.id;
-    this._selectedProduct.typeProductId=this._selectedTypeProduct.id;
-    this._selectedProduct.photo = this._dataFile;
-    this._errorUotput=true;
-
-    if(this._selectedProduct.photo==null){
-      this._error="Фото невыбрано!!";
-      return;
-    }
-
-    //------------------------- 28.04.21---------------------
-
-    this._repository.CreateProduct(this._selectedProduct).subscribe((data) => {
-      this._error='';
-      this._errorUotput=false;
-
-    //  this._products.push().
-     let  d=data as Product;
-        console.log("cteateProuct metod-- d.name--"+d.name);
-        this._products.push(d);
-      this.cancel();//15.03.21
-
-
-    },(err)=>{this._error=err.error;console.log(err);this._errorUotput=true;}
-
-    );
-  }
-  else{
-
-
+    if (this._flagViewMode === 'create') {
       this._selectedProduct.katalogId = this._selectedKagalog.id;
-      this._selectedProduct.typeProductId=this._selectedTypeProduct.id;
-      this._selectedProduct.photo = this._dataFile;
-      this._errorUotput=true;
+      this._selectedProduct.typeProductId = this._selectedTypeProduct.id;
+      //this._selectedProduct.photo = this._dataFile;
+      // this._selectedProduct.imageBase64 = this._selectedImage.imageBase64;
+      //this._selectedProduct.image = this._selectedImage.image; // name img (wwwroot) server
+      this._errorUotput = true;
+
+      if (
+        this._selectedProduct.imageBase64 == '' ||
+        this._selectedProduct.imageBase64 == null
+      ) {
+        this._error = 'Фото невыбрано!!';
+        return;
+      }
+
+      //------------------------- 28.04.21---------------------
+
+      this._repository.CreateProduct(this._selectedProduct).subscribe(
+        (data) => {
+          this._error = '';
+          this._errorUotput = false;
+
+          //  this._products.push().
+          let d = data as Product;
+          console.log('cteateProuct metod-- d.name--' + d.name);
+          this._products.push(d);
+          this.cancel(); //15.03.21
+        },
+        (err) => {
+          this._error = err.error;
+          console.log(err);
+          this._errorUotput = true;
+        }
+      );
+    } else {
+      this._selectedProduct.katalogId = this._selectedKagalog.id;
+      this._selectedProduct.typeProductId = this._selectedTypeProduct.id;
+      // this._selectedProduct.imageBase64 = this._selectedImage.imageBase64;
+      this._errorUotput = true;
       /*
       if(this._selectedProduct.photo==null){
         this._error="Фото невыбрано!!";
@@ -140,77 +170,113 @@ export class ProductComponent implements OnInit {
       */
       // ---------SEND DATA TO SERVER----------------
 
-      this._repository.UpdateProduct(this._selectedProduct).subscribe((data) => {
-        this._error='';
-        this._errorUotput=false;
+      this._repository.UpdateProduct(this._selectedProduct).subscribe(
+        (data) => {
+          this._error = '';
+          this._errorUotput = false;
 
-        this.cancel();//15.03.21
-
-
-      },(err)=>{this._error=err.error;console.log(err);this._errorUotput=true;}
-
+          this.cancel(); //15.03.21
+        },
+        (err) => {
+          this._error = err.error;
+          console.log(err);
+          this._errorUotput = true;
+        }
       );
 
-   // console.log(" throwError('not impliment exeption');")
+      // console.log(" throwError('not impliment exeption');")
 
+      // throwError("not impliment exeption");
+    }
     // throwError("not impliment exeption");
+    // this.reload(this._selectedKagalog.id);
 
-
-  }
-    // throwError("not impliment exeption");
-   // this.reload(this._selectedKagalog.id);
-
-   //this.cancel();//13.03.2021
-
+    //this.cancel();//13.03.2021
   }
 
   deleteModel() {
-   console.log("----throwError('not impliment exeption');-----");
-    throwError('not impliment exeption');
+  this._repository.DeleteProduct(this._selectedProduct.id).subscribe(()=>{
+    console.log("delet prodict item ok__"+this._selectedProduct.name);
+    //---------------------------
+
+      this._error = '';
+      this._errorUotput = false;
+
+      //  this._products.push().
+
+
+   this._products=   this._products.filter((i)=>i.id!==this._selectedProduct.id);
+      this.cancel(); //15.03.21
+    },
+    (err) => {
+      this._error = err.error;
+      console.log(err);
+      this._errorUotput = true;
+    }
+    //------------------------
+  );
   }
   cancel() {
     this._flagViewMode = 'default';
-    this._previewUrl=null;
+    this._selectedProduct = null; //05.05.21
     //this._dataFile=null;   19.12.20       ------------&&&????
-    this._flagPhoto=false;
-    this._imgInvalid=true;
-   // this._flagKatalogHiden=false;
-   this.ViwePanel();
+    this._flagDisplayAddButton = true;
+    this._flagPhoto = false;
+    this._flagInvalid = true;
+    // this._flagKatalogHiden=false;
+    this.ViwePanel();
 
-  //  this.changeKagalog(this._selectedKagalog);
-
+    //  this.changeKagalog(this._selectedKagalog);
   }
 
   // перезагрузить данные подКаталога по id
-  load(idKatalog:number){
-    this._repository.GetProducts(idKatalog).subscribe((d) => {this._products = d;this._error='';this._errorUotput=false;},
-    (err)=>{this._error=err.error;console.log(err);this._errorUotput=true;}
-    );//13.03.21
-
+  load(idKatalog: number) {
+    this._repository.GetProducts(idKatalog).subscribe(
+      (d) => {
+        this._products = d;
+        this._error = '';
+        this._errorUotput = false;
+      },
+      (err) => {
+        this._error = err.error;
+        console.log(err);
+        this._errorUotput = true;
+      }
+    ); //13.03.21
   }
-  onSetFilePhoto(event: File) {
-    this._dataFile = event;
-    if(this._dataFile!=null){
-      this._errorUotput=  false;
-      this. _imgInvalid=false;
-    //  console.log("test-photo_errorUotput------------")
+
+  // взаимидейсвеие с дочерним компонентом
+  onSetFilePhoto(event: string) {
+    // event генерируется в дочернем компоненте (задается тип и значение переменной)
+    this._selectedProduct.imageBase64 = event; //this._imgBase64 = event;
+    // в дочернем component crop-upload-file blog convert to type~{image/png}
+    //  png server --обработка только (.png)
+    //  this._selectedImage.name = 'temp.png';
+    this._flagPhoto = true;
+    this._flagInvalid = true;
+
+    if (this._selectedProduct.imageBase64.length > 0) {
+      this._errorUotput = false;
+      this._flagInvalid = false;
     }
-   this.preview();
-    //  console.log("fale name molel.component"+this._dataFile.name+" --"+this._dataFile);
   }
 
-  preview() {
-    this._flagPhoto=true;
-    // Show preview
-    var mimeType = this._dataFile.type;
-    if (mimeType.match(/image\/*/) == null) {
-      return;
+  getBlobImg(name: string) {
+
+    let n = 'http://localhost:5000/api/image/02130c6d-5331-43d3-90ba-d248ca11127c.png';
+    this._repository.GetBlobIMG(name).subscribe((d) => {
+     this.createImageFromBlob(d);
+    });
+  }
+  createImageFromBlob(image: Blob) {
+    let reader = new FileReader();
+    reader.addEventListener("load", () => {
+      this._selectedProduct.imageBase64 = reader.result;
+    }, false);
+  if (image) {
+      reader.readAsDataURL(image);
     }
-
-    var reader = new FileReader();
-    reader.readAsDataURL(this._dataFile);
-    reader.onload = (_event) => {
-      this._previewUrl = reader.result;
-    };
+    console.log("----------------------------cBlob -------------------")
   }
+
 }

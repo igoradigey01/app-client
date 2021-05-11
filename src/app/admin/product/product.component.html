@@ -88,14 +88,21 @@
           >
             {{ product.description }}
           </div>
-          <div [ngClass]="{ 'row-grid': i % 2 == 0 }" *ngIf="product.image">
+
+          <div
+            [ngClass]="{ 'row-grid': i % 2 == 0 }"
+            *ngIf="product.image; else elseBlock"
+          >
             <img height="38" src="{{ _url_img }}{{ product.image }}" />
           </div>
-          <div [ngClass]="{ 'row-grid': i % 2 == 0 }" *ngIf="!product.image">
-            <img height="38" src="{{ _url_img }}not_found.png" />
-          </div>
+          <ng-template #elseBlock>
+            <div [ngClass]="{ 'row-grid': i % 2 == 0 }">
+              <img height="38" src="{{ _url_img }}not_found.png" />
+            </div>
+          </ng-template>
+
+          <!-- end  model view-->
         </ng-template>
-        <!-- end  model view-->
       </div>
     </div>
 
@@ -258,21 +265,20 @@
 
           <!----------------------------------------------------->
           <div class="form-group">
-            <label> <span class="input-group-text">Фото</span></label>
-
             <div class="form-control">
-              <app-upload-files
-                (_onSelectFile)="onSetFilePhoto($event)"
-              ></app-upload-files>
+              <app-crop-upload-files
+                (getImg)="onSetFilePhoto($event)"
+              ></app-crop-upload-files>
             </div>
           </div>
           <div class="d-flex justify-content-center">
             <img
-              [src]="_previewUrl"
+              [src]="_selectedProduct.imageBase64"
               [style.display]="_flagPhoto == true ? 'block' : 'none'"
               class="img-wrap mb-3"
             />
           </div>
+          <!----------------------------------------------       -->
         </div>
       </div>
 
@@ -283,7 +289,7 @@
           <button
             name="saveButton"
             [disabled]="
-              name.invalid || price.invalid || markup.invalid || _imgInvalid
+              name.invalid || price.invalid || markup.invalid || _flagInvalid
             "
             class="btn btn-sm btn-success"
             (click)="saveModel()"
@@ -353,6 +359,7 @@
               <button
                 type="button"
                 class="btn btn-primary dropdown-toggle"
+
                 data-toggle="dropdown"
               >
                 ({{ _selectedTypeProduct.name }})
@@ -360,6 +367,7 @@
               <div class="dropdown-menu">
                 <li
                   (click)="changeTypeProduct(item)"
+                  (change)="onEditFormChange()"
                   *ngFor="let item of _typeProducts"
                 >
                   {{ item.name }}
@@ -370,16 +378,24 @@
           <!--------------------------->
 
           <div class="input-group input-group-sm mb-3">
-            <div class="input-group-prepend">
+            <div class="input-group-prepend ">
               <span class="input-group-text">Название</span>
             </div>
             <input
               type="text"
+              (change)="onEditFormChange()"
               class="form-control"
+              #nameEdit="ngModel"
               required
               [(ngModel)]="_selectedProduct.name"
               placeholder="Название"
             />
+            <div
+            [hidden]="nameEdit.valid || priceEdit.untouched"
+            class="alert alert-danger p-1"
+          >
+            !
+          </div>
           </div>
 
           <div class="input-group input-group-sm mb-3">
@@ -388,12 +404,20 @@
             </div>
             <input
               type="text"
+              #priceEdit="ngModel"
+              (change)="onEditFormChange()"
               class="form-control"
               required
-              pattern="[0-9]"
+              pattern="[0-9]{1,}"
               [(ngModel)]="_selectedProduct.price"
               placeholder="Цена"
             />
+            <div
+              [hidden]="priceEdit.valid || priceEdit.untouched"
+              class="alert alert-danger p-1"
+            >
+              !
+            </div>
           </div>
 
           <div class="input-group input-group-sm mb-3">
@@ -402,12 +426,21 @@
             </div>
             <input
               type="text"
+              name="markupEdit"
+              (change)="onEditFormChange()"
+              #markupEdit="ngModel"
               class="form-control"
               required
-              pattern="[0-9]"
+              pattern="[0-9]{1,}"
               [(ngModel)]="_selectedProduct.markup"
               placeholder="Торговая наценка"
             />
+            <div
+              [hidden]="markupEdit.valid || markupEdit.untouched"
+              class="alert alert-danger p-1"
+            >
+              !
+            </div>
           </div>
 
           <!------------------------------------>
@@ -417,6 +450,8 @@
             >
             <textarea
               [(ngModel)]="_selectedProduct.description"
+              (change)="onEditFormChange()"
+
               placeholder="описание товара"
               class="form-control"
               rows="3"
@@ -425,17 +460,16 @@
 
           <!----------------------------------------------------->
           <div class="form-group">
-            <label> <span class="input-group-text">Фото</span></label>
-
             <div class="form-control">
-              <app-upload-files
-                (_onSelectFile)="onSetFilePhoto($event)"
-              ></app-upload-files>
+              <app-crop-upload-files
+                (getImg)="onSetFilePhoto($event)"
+              ></app-crop-upload-files>
             </div>
           </div>
           <div class="d-flex justify-content-center">
+            <!-----creat _flagBase64---------------------------------->
             <img
-              [src]="_previewUrl"
+              [src]="this._selectedProduct.imageBase64"
               [style.display]="_flagPhoto == true ? 'block' : 'none'"
               class="img-wrap mb-3"
             />
@@ -445,7 +479,12 @@
 
           <div class="d-flex justify-content-center">
             <div class="btn-group text-center" role="group">
-              <button class="btn btn-sm btn-success" (click)="saveModel()">
+              <button
+              class="btn btn-sm btn-success"
+              [disabled]="
+              nameEdit.invalid || priceEdit.invalid || markupEdit.invalid || _flagInvalid
+            "
+              (click)="saveModel()">
                 Сохранить
               </button>
               <button class="btn btn-sm btn-danger" (click)="deleteModel()">

@@ -174,22 +174,22 @@
           <!-- Carousel end-->
 
           <!---------------------Image Photo Begin----------------------01.05.21---------->
-        <div [style.display]="_flagDisplayAddImgButton ? 'none' : 'block'">
+
           <div class="form-group">
             <div class="form-control">
-              <app-upload-files
-                (_onSelectFile)="onSetFilePhoto($event)"
-              ></app-upload-files>
+              <app-crop-upload-files
+                (getImg)="onSetFilePhoto($event)"
+              ></app-crop-upload-files>
             </div>
           </div>
           <div class="d-flex justify-content-center">
             <img
-              [src]="_previewUrl"
+              [src]="_selectedImage.imageBase64"
               [style.display]="_flagPhoto == true ? 'block' : 'none'"
               class="img-wrap mb-3"
             />
           </div>
-        </div>
+
 
           <!---------------   Imge Photo end       -->
 

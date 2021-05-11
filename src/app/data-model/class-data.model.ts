@@ -29,10 +29,13 @@ export class Product {
     public price?: number,
     public markup?: number, //Торговая наценка
     public description?: string,
-    public photo?: File,
-    public image?: string
+    public image?: string, // name -- img getServer(wwwroot/image)
+    public photo?: any, // именованая ссылка на Blob  window.URL.createObjectURL(d)
+    public imageBase64?: any
   ) {}
 }
+
+
 
 export class Image{
 
@@ -40,7 +43,9 @@ export class Image{
     public id:number,
     public name:string,
     public productId:number,
-    public photo?: File
+    public image?: string, // name -- img getServer(wwwroot/image)
+    public photo?:File ,
+    public imageBase64?:string //base64 img
   ){}
 
 }

@@ -21,6 +21,7 @@ import{GlobalVar} from './globalVar';
 import { FooterModule } from './footer/footer.module';
 import {HeaderModule} from './header/header.module';
 import {ContentModule} from './content/content.module';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 
 
@@ -56,7 +57,11 @@ import {ContentModule} from './content/content.module';
 
 
      //----------- firebas ---------------
-   AngularFireModule.initializeApp(environment.firebaseConfig)
+   AngularFireModule.initializeApp(environment.firebaseConfig),
+
+
+
+     BrowserAnimationsModule
 
   ],
   providers:[
