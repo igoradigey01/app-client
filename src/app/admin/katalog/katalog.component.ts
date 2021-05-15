@@ -25,6 +25,7 @@ export class KatalogComponent implements OnInit {
   _katalogs: Katalog[] = null; // массив items katalog
   _flagViewMode: string = 'default'; // табличный режим
   _flagFocus: boolean = true;
+  _flagDisplayAddButton:boolean=true;
 
   constructor(private _repository: KatalogDataService) {}
 
@@ -41,12 +42,16 @@ export class KatalogComponent implements OnInit {
   changeCategory(item?: Katalog) {
     this._selectedKagalog = item;
     this._flagViewMode = 'edit';
+    this._flagDisplayAddButton=false;
+   
   }
   //--------------------
 
   addItem() {
     this._flagViewMode = 'create';
     this._selectedKagalog = new Katalog(-1, '');
+    this._flagDisplayAddButton=false;
+
   }
 
   deleteItem() {
@@ -99,5 +104,6 @@ let index=    this._katalogs.findIndex(d=>d.id===this._selectedKagalog.id);
 
   cancel() {
     this._flagViewMode = 'default';
+    this._flagDisplayAddButton=true;
   }
 }

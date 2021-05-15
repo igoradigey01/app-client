@@ -1,34 +1,37 @@
 <div class="container">
-  <div class="row">
-    <input type="file" (change)="changeFale($event)" />
+  <div>
+    <div class="row" [hidden]="_unhidden">
+      <input type="file" (change)="fileChangeEvent($event)" />
+    </div>
   </div>
- <div [style.display]="_flagViewCropUploadImg ? 'block' : 'none'" >
+
   <div class="row">
-    <div class="col-lg-5">
-      <image-cropper
-        [imageChangedEvent]="_imgChangeEvt"
-        [maintainAspectRatio]="false"
-        [resizeToHeight]="400"
-        format="png"
-        (imageCropped)="cropImg($event)"
-        (imageLoaded)="imgLoad()"
-        (cropperReady)="initCropper()"
-        (loadImageFailed)="imgFailed()"
-      >
-      </image-cropper>
+
+    <div class="form-check" style="margin-left: auto;">
+      <input
+        class="form-check-input"
+        type="checkbox"
+        value=""
+        (click)="showImg()"
+      /><label>Выбрать</label>
     </div>
 
-    <div class="col-lg-3">
-      <img [src]="_cropImgPreview" class="img-fluid" />
+    <div [style.display]="_hidden ? 'block' : 'none'">
+      <div style="height: 350px">
+        <image-cropper
+          [imageChangedEvent]="imageChangedEvent"
+          [maintainAspectRatio]="false"
+          [resizeToHeight]="300"
+          format="png"
+          (imageCropped)="imageCropped($event)"
+        >
+        </image-cropper>
+      </div>
     </div>
   </div>
-  <div class="row">
-    <div class="btn-group" role="group">
-      <button class="btn btn-sm btn-success" (click)="changeImg()">
-        Сохранить
-      </button>
-      <button class="btn btn-sm btn-warning" (click)="cancel()">Отмена</button>
+  <div [style.display]="_unhidden ? 'block' : 'none'">
+    <div style="height: 350">
+      <img [src]="croppedImage" />
     </div>
   </div>
-</div>
 </div>

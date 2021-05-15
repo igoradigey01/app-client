@@ -19,6 +19,14 @@ export  class VertionInfo{
   ){}
 }
 
+export class CorpImgFile{
+  constructor(
+    public flag:boolean,
+    public fileBase64?:string
+  ){}
+
+}
+
 // конечное представление  продукта Камод-лдсп-венги Камод-мдф-венги Кровать-2000*1400-дубСанома
 export class Product {
   constructor(

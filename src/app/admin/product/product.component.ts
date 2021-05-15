@@ -6,6 +6,7 @@ import {
   Product,
   TypeProduct,
   Image,
+  CorpImgFile,
 } from '../../data-model/class-data.model';
 import { map, filter } from 'rxjs/operators';
 import { promise } from 'selenium-webdriver';
@@ -46,14 +47,17 @@ export class ProductComponent implements OnInit {
   _dataFile: File = null; // неиспльзуется  blob img
   _previewUrl: any = null; // неиспльзуется  blob img
   //_selectedImage: Image = new Image(-1, '', -1);
-  _flagBase64: boolean = false;
+
   _flagPhoto: boolean = false;
+  _flagButton: boolean = true;
+  _flag_ng_template:boolean=false;
 
   _url_img = this._repository.GetUrlImg();
 
   constructor(private _repository: ProductDataService) {}
 
   ngOnInit(): void {
+    this._flagDisplayAddButton = true;
     this._repository.GetKatalogs().subscribe((d) => (this._katalogs = d));
     this._repository
       .GetTypeProduct()
@@ -77,12 +81,11 @@ export class ProductComponent implements OnInit {
     //  this._selectedProduct.idTypeProduct=item.id;
     console.log(item.id + '----' + item.name);
     this._selectedTypeProduct = item;
-    this._flagInvalid=false;//-----11.05.21
+    this._flagInvalid = false; //-----11.05.21
   }
-  onEditFormChange(){
-    this._flagInvalid=false;
-    console.log("EditProduct ----onchange--event ---")
-
+  onEditFormChange() {
+    this._flagInvalid = false;
+    console.log('EditProduct ----onchange--event ---');
   }
 
   changeProduct(item?: Product) {
@@ -105,7 +108,8 @@ export class ProductComponent implements OnInit {
 
       this._flagViewMode = 'edit';
       this._flagPhoto = true;
-      this._flagBase64 = false;
+      this._flag_ng_template=true;
+
       // let url=  this._url_img + this._selectedProduct.image;
       // this.getPhotoBase64(this._selectedProduct.image);
       //  this.previewOld();
@@ -120,23 +124,25 @@ export class ProductComponent implements OnInit {
     this._selectedProduct = new Product(-1, '', -1, null, null, null);
 
     this._flagViewMode = 'create';
+    this._flagPhoto = false;
+    this._flagDisplayAddButton = false;
   }
   saveModel() {
-    if (this._flagViewMode === 'create') {
-      this._selectedProduct.katalogId = this._selectedKagalog.id;
-      this._selectedProduct.typeProductId = this._selectedTypeProduct.id;
-      //this._selectedProduct.photo = this._dataFile;
-      // this._selectedProduct.imageBase64 = this._selectedImage.imageBase64;
-      //this._selectedProduct.image = this._selectedImage.image; // name img (wwwroot) server
-      this._errorUotput = true;
+    this._selectedProduct.katalogId = this._selectedKagalog.id;
+    this._selectedProduct.typeProductId = this._selectedTypeProduct.id;
 
-      if (
-        this._selectedProduct.imageBase64 == '' ||
-        this._selectedProduct.imageBase64 == null
-      ) {
-        this._error = 'Фото невыбрано!!';
-        return;
-      }
+    this._errorUotput = true;
+    this._flagDisplayAddButton = true;
+
+    if (
+      this._selectedProduct.imageBase64 == '' ||
+      this._selectedProduct.imageBase64 == null
+    ) {
+      this._error = 'Фото невыбрано!!';
+      return;
+    }
+
+    if (this._flagViewMode === 'create') {
 
       //------------------------- 28.04.21---------------------
 
@@ -158,16 +164,7 @@ export class ProductComponent implements OnInit {
         }
       );
     } else {
-      this._selectedProduct.katalogId = this._selectedKagalog.id;
-      this._selectedProduct.typeProductId = this._selectedTypeProduct.id;
-      // this._selectedProduct.imageBase64 = this._selectedImage.imageBase64;
-      this._errorUotput = true;
-      /*
-      if(this._selectedProduct.photo==null){
-        this._error="Фото невыбрано!!";
-        return;
-      }
-      */
+      
       // ---------SEND DATA TO SERVER----------------
 
       this._repository.UpdateProduct(this._selectedProduct).subscribe(
@@ -195,26 +192,28 @@ export class ProductComponent implements OnInit {
   }
 
   deleteModel() {
-  this._repository.DeleteProduct(this._selectedProduct.id).subscribe(()=>{
-    console.log("delet prodict item ok__"+this._selectedProduct.name);
-    //---------------------------
+    this._repository.DeleteProduct(this._selectedProduct.id).subscribe(
+      () => {
+        console.log('delet prodict item ok__' + this._selectedProduct.name);
+        //---------------------------
 
-      this._error = '';
-      this._errorUotput = false;
+        this._error = '';
+        this._errorUotput = false;
 
-      //  this._products.push().
+        //  this._products.push().
 
-
-   this._products=   this._products.filter((i)=>i.id!==this._selectedProduct.id);
-      this.cancel(); //15.03.21
-    },
-    (err) => {
-      this._error = err.error;
-      console.log(err);
-      this._errorUotput = true;
-    }
-    //------------------------
-  );
+        this._products = this._products.filter(
+          (i) => i.id !== this._selectedProduct.id
+        );
+        this.cancel(); //15.03.21
+      },
+      (err) => {
+        this._error = err.error;
+        console.log(err);
+        this._errorUotput = true;
+      }
+      //------------------------
+    );
   }
   cancel() {
     this._flagViewMode = 'default';
@@ -246,37 +245,52 @@ export class ProductComponent implements OnInit {
   }
 
   // взаимидейсвеие с дочерним компонентом
-  onSetFilePhoto(event: string) {
-    // event генерируется в дочернем компоненте (задается тип и значение переменной)
-    this._selectedProduct.imageBase64 = event; //this._imgBase64 = event;
-    // в дочернем component crop-upload-file blog convert to type~{image/png}
-    //  png server --обработка только (.png)
-    //  this._selectedImage.name = 'temp.png';
-    this._flagPhoto = true;
-    this._flagInvalid = true;
+  onSetFilePhoto(event: CorpImgFile) {
+    if (!event.flag) {
+      this._flagButton = false;
+       this._flagPhoto=false;
+       this._flag_ng_template=false;
+      this._selectedProduct.imageBase64 = null;
 
-    if (this._selectedProduct.imageBase64.length > 0) {
-      this._errorUotput = false;
-      this._flagInvalid = false;
+      console.log(
+        'onSetFilePhoto- flag flase -event.fileBase64' + event.fileBase64
+      );
+    } else {
+      console.log(
+        'onSetFilePhoto- flag true -event.fileBase64--' + event.fileBase64
+      );
+      // event генерируется в дочернем компоненте (задается тип и значение переменной)
+      this._selectedProduct.imageBase64 = event.fileBase64; //this._imgBase64 = event;
+      // в дочернем component crop-upload-file blog convert to type~{image/png}
+      //  png server --обработка только (.png)
+      //  this._selectedImage.name = 'temp.png';
+
+      // this._flagInvalid = true;
+      this._flagButton = true;
+      if (this._selectedProduct.imageBase64.length > 0) {
+        this._errorUotput = false;
+        this._flagInvalid = false;
+      }
     }
   }
 
   getBlobImg(name: string) {
-
-    let n = 'http://localhost:5000/api/image/02130c6d-5331-43d3-90ba-d248ca11127c.png';
     this._repository.GetBlobIMG(name).subscribe((d) => {
-     this.createImageFromBlob(d);
+      this.createImageFromBlob(d);
     });
   }
   createImageFromBlob(image: Blob) {
     let reader = new FileReader();
-    reader.addEventListener("load", () => {
-      this._selectedProduct.imageBase64 = reader.result;
-    }, false);
-  if (image) {
+    reader.addEventListener(
+      'load',
+      () => {
+        this._selectedProduct.imageBase64 = reader.result;
+      },
+      false
+    );
+    if (image) {
       reader.readAsDataURL(image);
     }
-    console.log("----------------------------cBlob -------------------")
+    console.log('----------------------------cBlob -------------------');
   }
-
 }

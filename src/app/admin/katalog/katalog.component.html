@@ -1,8 +1,29 @@
-<div class="row">
-  <div class="btn-danger col-sm-2 text-center" routerLink="/admin">
+
+
+<!---------------->
+<div class="grid-container-menu" style="background-color: blueviolet">
+  <div class="btn-danger text-center item-menu-1" routerLink="/admin">
     модуль admin
   </div>
+
+  <div class="btn-warning text-center item-menu-2" (click)="cancel()">
+    id(
+    <span class="text-primary"> {{ _selectedKagalog.id }}</span
+    >)
+    {{ _selectedKagalog.name }} <span class="title">(Товар)</span>
+  </div>
+
+  <div
+    class="btn item-menu-3"
+    (click)="addItem()"
+    [style.display]="_flagDisplayAddButton ? 'block' : 'none'"
+  >
+    <img src="./../../../assets/icon/add-button.png" height="25" />
+  </div>
 </div>
+<!--- Output Error-->
+
+<!------------------->
 <div [ngSwitch]="_flagViewMode">
   <ng-template ngSwitchDefault>
     <div class="container-fluid">
@@ -18,9 +39,7 @@
           }}</span>
           {{ item.name }}
         </button>
-        <button class="btn" (click)="addItem()">
-          <img src="./../../../assets/icon/add-button.png" height="30" />
-        </button>
+
       </div>
     </div>
   </ng-template>
@@ -52,11 +71,7 @@
   <!--  Edit -Delete template -->
   <ng-template ngSwitchCase="edit">
     <div class="edit">
-      <div>
-        <button class="btn btn-sm btn-primary" (click)="addItem()">
-          <img src="./../../../assets/icon/add-button.png" height="25" />
-        </button>
-      </div>
+      
       <p>Редактировать Элемент</p>
       <input
         type="text"

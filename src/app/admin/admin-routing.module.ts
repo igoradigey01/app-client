@@ -7,7 +7,7 @@ import{ProductComponent} from './product/product.component';
 import{ItemProductComponent} from './item-product/item-product.component'
 import{ProductTypeComponent} from './product-type/product-type.component';
 import{InfoComponent} from './info/info.component';
-import {CropUploadFilesComponent} from './crop-upload-files/crop-upload-files.component'
+import {NomenclatureComponent} from './nomenclature/nomenclature.component'
 import { from } from 'rxjs';
 
 const routes: Routes = [
@@ -17,7 +17,7 @@ const routes: Routes = [
   {path:'item-product',component:ItemProductComponent},
   {path:'type-product',component:ProductTypeComponent},
   {path:'info',component:InfoComponent},
-  {path:'crop-img',component:CropUploadFilesComponent}
+  {path:'nomenclature',component:NomenclatureComponent}
 ];
 
 @NgModule({

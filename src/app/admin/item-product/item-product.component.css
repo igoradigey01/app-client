@@ -6,6 +6,9 @@
   grid-template-columns: 25% auto;
   grid-template-rows: 1fr 1fr;
 }
+.title{
+  color: white;
+}
 .carousel{
 
   width: 40%;
