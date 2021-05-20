@@ -8,9 +8,8 @@ import {
   Image,
   CorpImgFile,
 } from '../../data-model/class-data.model';
-import { map, filter } from 'rxjs/operators';
-import { promise } from 'selenium-webdriver';
-import { fileURLToPath, URL } from 'url';
+import { HttpEvent, HttpEventType} from '@angular/common/http';
+import { map } from  'rxjs/operators';
 
 @Component({
   selector: 'app-product',
@@ -44,13 +43,11 @@ export class ProductComponent implements OnInit {
   _selectedTypeProduct: TypeProduct = new TypeProduct(-1, '', null);
   _selectedProduct: Product = new Product(-1, '', -1, -1, null, null, null);
 
-  _dataFile: File = null; // неиспльзуется  blob img
-  _previewUrl: any = null; // неиспльзуется  blob img
-  //_selectedImage: Image = new Image(-1, '', -1);
-
   _flagPhoto: boolean = false;
   _flagButton: boolean = true;
-  _flag_ng_template:boolean=false;
+  _flag_ng_template: boolean = false;
+  _flag_sendServerData: boolean = true;
+  _progress: number = 0;
 
   _url_img = this._repository.GetUrlImg();
 
@@ -91,6 +88,7 @@ export class ProductComponent implements OnInit {
   changeProduct(item?: Product) {
     // console.log(item.idTypeProduct+'--'+item.idKatalog+'--'+item.id+'--'+item.image+'--'+item.photo);
     this._selectedProduct = item;
+    this._flag_sendServerData=true;
     console.log('----id Katalog--' + this._selectedProduct.katalogId);
     if (this._selectedProduct.katalogId == -1) {
       this._errorUotput = true;
@@ -108,7 +106,7 @@ export class ProductComponent implements OnInit {
 
       this._flagViewMode = 'edit';
       this._flagPhoto = true;
-      this._flag_ng_template=true;
+      this._flag_ng_template = true;
 
       // let url=  this._url_img + this._selectedProduct.image;
       // this.getPhotoBase64(this._selectedProduct.image);
@@ -122,12 +120,18 @@ export class ProductComponent implements OnInit {
 
   addModel() {
     this._selectedProduct = new Product(-1, '', -1, null, null, null);
+    this._flag_sendServerData=true;
 
     this._flagViewMode = 'create';
     this._flagPhoto = false;
     this._flagDisplayAddButton = false;
   }
   saveModel() {
+    //---begin start progress file
+    this._flagInvalid = true;
+    this._flag_sendServerData = false;
+
+    //--- end progess file
     this._selectedProduct.katalogId = this._selectedKagalog.id;
     this._selectedProduct.typeProductId = this._selectedTypeProduct.id;
 
@@ -143,19 +147,46 @@ export class ProductComponent implements OnInit {
     }
 
     if (this._flagViewMode === 'create') {
-
       //------------------------- 28.04.21---------------------
 
       this._repository.CreateProduct(this._selectedProduct).subscribe(
-        (data) => {
-          this._error = '';
-          this._errorUotput = false;
+          (data:HttpEvent<Product>) => {
+            //progress bar
+            if (data.type === HttpEventType.UploadProgress) {
+
+            }
+            switch(data.type)
+            {
+              case HttpEventType.Sent:
+                console.log('Sent-- запрос отправлен--CreateProduct--') ; // запрос отправлен
+                break;
+              case HttpEventType.UploadProgress:
+                // do something
+                this._progress = Math.round((100 * data.loaded) / data.total);
+                console.log("HttpEventType.UploadProgress--"+this._progress);
+                break;
+              case HttpEventType.Response:
+                console.log('Finished');
+                // do someting
+                let d = data.body as Product;
+                console.log('cteateProuct metod-- d.name--' + d.name);
+                this._products.push(d);
+                this._error = '';
+               this._errorUotput = false;
+               this.cancel(); //15.03.21
+                break;
+
+
+            }
+
 
           //  this._products.push().
-          let d = data as Product;
+          /* 15.05.21
+          let d = data. as Product;
           console.log('cteateProuct metod-- d.name--' + d.name);
           this._products.push(d);
-          this.cancel(); //15.03.21
+          */
+
         },
         (err) => {
           this._error = err.error;
@@ -164,22 +195,39 @@ export class ProductComponent implements OnInit {
         }
       );
     } else {
-      
       // ---------SEND DATA TO SERVER----------------
 
-      this._repository.UpdateProduct(this._selectedProduct).subscribe(
-        (data) => {
-          this._error = '';
-          this._errorUotput = false;
+      this._repository
+        .UpdateProduct(this._selectedProduct)
+         .subscribe(  (data:HttpEvent<any>) => {
+          //progress bar
+          switch(data.type)
+            {
+              case HttpEventType.Sent:
+                console.log('Sent-- запрос отправлен--UpdateProduct--') ; // запрос отправлен
+                break;
+              case HttpEventType.UploadProgress:
+                // do something
+                this._progress = Math.round((100 * data.loaded) / data.total);
+                console.log("HttpEventType.UploadProgress--"+this._progress);
+                break;
+              case HttpEventType.Response:
+                console.log('---Finished-----');
+                this._error = '';
+                this._errorUotput = false;
 
-          this.cancel(); //15.03.21
-        },
-        (err) => {
-          this._error = err.error;
-          console.log(err);
-          this._errorUotput = true;
-        }
-      );
+                this.cancel(); //15.03.21
+                break;
+          }
+            // end progrss bar
+
+          },
+          (err) => {
+            this._error = err.error;
+            console.log(err);
+            this._errorUotput = true;
+          }
+        );
 
       // console.log(" throwError('not impliment exeption');")
 
@@ -217,6 +265,10 @@ export class ProductComponent implements OnInit {
   }
   cancel() {
     this._flagViewMode = 'default';
+
+    this._error = '';
+    this._errorUotput = false;
+
     this._selectedProduct = null; //05.05.21
     //this._dataFile=null;   19.12.20       ------------&&&????
     this._flagDisplayAddButton = true;
@@ -226,6 +278,10 @@ export class ProductComponent implements OnInit {
     this.ViwePanel();
 
     //  this.changeKagalog(this._selectedKagalog);
+  }
+  //----откат-- шаблона(возврат)------------
+  undo(){
+    this._flag_sendServerData=true;
   }
 
   // перезагрузить данные подКаталога по id
@@ -248,17 +304,14 @@ export class ProductComponent implements OnInit {
   onSetFilePhoto(event: CorpImgFile) {
     if (!event.flag) {
       this._flagButton = false;
-       this._flagPhoto=false;
-       this._flag_ng_template=false;
+      this._flagPhoto = false;
+      this._flag_ng_template = false;
       this._selectedProduct.imageBase64 = null;
 
-      console.log(
-        'onSetFilePhoto- flag flase -event.fileBase64' + event.fileBase64
-      );
+     // console.log('onSetFilePhoto- flag flase -event.fileBase64' + event.fileBase64 );
     } else {
-      console.log(
-        'onSetFilePhoto- flag true -event.fileBase64--' + event.fileBase64
-      );
+    //  console.log( 'onSetFilePhoto- flag true -event.fileBase64--' + event.fileBase64  );
+
       // event генерируется в дочернем компоненте (задается тип и значение переменной)
       this._selectedProduct.imageBase64 = event.fileBase64; //this._imgBase64 = event;
       // в дочернем component crop-upload-file blog convert to type~{image/png}

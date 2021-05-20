@@ -91,11 +91,11 @@
 
           <div
             [ngClass]="{ 'row-grid': i % 2 == 0 }"
-            *ngIf="product.image; else elseBlock"
+            *ngIf="product.image; else elseBlock_3"
           >
             <img height="38" src="{{ _url_img }}{{ product.image }}" />
           </div>
-          <ng-template #elseBlock>
+          <ng-template #elseBlock_3>
             <div [ngClass]="{ 'row-grid': i % 2 == 0 }">
               <img height="38" src="{{ _url_img }}not_found.png" />
             </div>
@@ -112,11 +112,15 @@
     <div class="create">
       <!---------------------------create start-->
 
-      <!-------------------edit-create bigin---++++++++-->
+      <!-------------- -----edit-create bigin-Card --++++++++-->
 
       <div class="card">
         <div class="card-body">
           <h4 class="card-title text-center">Создать Элемент</h4>
+
+          <div *ngIf="_flag_sendServerData; else elseBlock_1">
+
+
           <!-- begin CKedit5------------------------------------->
           <div
             class="input-group float-right input-group-sm d-flex justify-content-end"
@@ -272,11 +276,10 @@
             </div>
           </div>
           <!---- img -->
-          <!----------------------------------------------       -->
-        </div>
 
 
-      <!---------------          -->
+ <!-- end form  edit  card ------------------------------------->
+      <!---------------  button form post start        -->
 
       <div class="row"  style="text-align: center;" [style.display]="_flagButton ? 'block' : 'none' ">
         <div class="btn-group "  role="group">
@@ -296,8 +299,28 @@
           </button>
         </div>
       </div>
+       <!---------------  button form post end       -->
+      </div>
+      <ng-template #elseBlock_1>
+        <div class="progress" >
+          <div class="progress-bar" role="progressbar" [style.width.%]="_progress"   ></div>
+        </div>
+        <!--------------------->
+
+
+         <!----  -->
+        <div class="row"  style="text-align: center;">
+          <p>({{_progress}})</p>
+        <button class="btn btn-sm btn-warning" (click)="undo()">
+          Отмена
+        </button>
+        </div>
+      </ng-template>
+      <!----------------------------------------------       -->
     </div>
-    </div>
+
+    </div>  <!-- end card-->
+    </div>  <!-- end create-->
 
     <!-- end   ------------------->
   </ng-template>
@@ -307,6 +330,8 @@
       <div class="card">
         <div class="card-body">
           <h4 class="card-title text-center">Редактировать элемент</h4>
+
+          <div *ngIf="_flag_sendServerData; else elseBlock_2">
           <!-- begin CKedit5------------------------------------->
           <div
             class="input-group float-right input-group-sm d-flex justify-content-end"
@@ -475,7 +500,7 @@
           </div>
         </div>
 
-          <!---------------          -->
+          <!---------------  Botton edit start        -->
 
           <div class="d-flex justify-content-center">
             <div class="btn-group text-center" role="group">
@@ -495,9 +520,22 @@
               </button>
             </div>
           </div>
-        </div>
-      </div>
-    </div>
+          <!--button edit end-->
+          </div> <!-- end  _flag_sendServerData-->
+          <ng-template #elseBlock_2>
+            <div class="progress" >
+              <div class="progress-bar" role="progressbar" [style.width.%]="_progress"   ></div>
+            </div>
+            <div class="row"  style="text-align: center;">
+              <p>({{_progress}})</p>
+            <button class="btn btn-sm btn-warning" (click)="undo()">
+              Отмена
+            </button>
+            </div>
+          </ng-template>
+        </div> <!--card-body end-->
+      </div> <!-- card  end-->
+    </div> <!-- div edit end -->
     <!-- end edit  ------------------->
   </ng-template>
 </div>

@@ -1,14 +1,18 @@
 import { Component, OnInit } from '@angular/core';
+import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import { Image } from 'src/app/data-model/class-data.model';
+import{ProductDetailsDataService} from '../../data-model/product-details-data.service';
 //import { environment } from './../../../assets/images' ;
 
 @Component({
-  selector: 'app-item-product',
-  templateUrl: './item-product.component.html',
-  styleUrls: ['./item-product.component.css']
+  selector: 'app-product-details.',
+  templateUrl: './product-details.component.html',
+  styleUrls: ['./product-details.component.css'],
+  providers:[ProductDetailsDataService]
 })
 //------------User view item-product
-export class ItemProductComponent implements OnInit {
+export class ProductDetailsComponent implements OnInit {
+
   _images: Image[] = [new Image(-1, 'not_found.png', -1)];
   _currentImage: Image;
   _notFoundImage: Image = new Image(-1, 'not_found.png', -1);
@@ -20,11 +24,13 @@ export class ItemProductComponent implements OnInit {
     return 'https://s.x-01.ru/images/not_found.png';
   }
 
-  constructor() { }
+  constructor(
+    private _repository: ProductDetailsDataService
+  ) { }
 
   ngOnInit(): void {
     //---------------------14.05.21
-    this._flagCarouselHiden=true;
+   // this._flagCarouselHiden=true;
     //this._currentImage
   }
   Prev() {

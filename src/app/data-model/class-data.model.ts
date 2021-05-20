@@ -51,11 +51,18 @@ export class Image{
     public id:number,
     public name:string,
     public productId:number,
-    public image?: string, // name -- img getServer(wwwroot/image)
-    public photo?:File ,
-    public imageBase64?:string //base64 img
+  //  public image?: string, // name -- img getServer(wwwroot/image)
+    public imageBase64?:any//base64 img
   ){}
 
+}
+
+export class ItemProduct{
+  constructor(
+    public product:Product,
+    public image?:Image[],
+    public nomenclature?:Nomenclature[]
+  ){}
 }
 
 // -- дон орех,венги,солешкаМрамор,кожЗам коричневый,рагожка серая

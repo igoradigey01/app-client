@@ -66,27 +66,27 @@
         <ng-template ngFor let-product [ngForOf]="_products" let-i="index">
           <div
             [ngClass]="{ 'row-grid': i % 2 == 0 }"
-            (click)="changeProduct(product)"
+            (click)="changeItemProduct(product)"
           >
             {{ product.id }}
           </div>
 
           <div
             [ngClass]="{ 'row-grid': i % 2 == 0 }"
-            (click)="changeProduct(product)"
+            (click)="changeItemProduct(product)"
           >
             {{ product.name }}
           </div>
           <div
             [ngClass]="{ 'row-grid': i % 2 == 0 }"
-            (click)="changeProduct(product)"
+            (click)="changeItemProduct(product)"
           >
             {{ product.price }}
           </div>
           <div
             class="hiden-description"
             [ngClass]="{ 'row-grid': i % 2 == 0 }"
-            (click)="changeProduct(product)"
+            (click)="changeItemProduct(product)"
           >
             {{ product.description }}
           </div>
@@ -109,6 +109,8 @@
       <div class="card">
         <div class="card-body">
           <h4 class="card-title text-center">Редактировать элемент</h4>
+
+
           <!-- begin CKedit5------------------------------------->
 
           <!-- end --  CKedit5------------------------------------->
@@ -122,17 +124,17 @@
           <!--------------------------->
 
           <div>
-            <span class="input-group-text">{{ _selectedProduct.name }}</span>
+            <span class="input-group-text">{{ _selectedItemProduct.product.name }}</span>
           </div>
 
           <!-- Caruosel begin-->
           <div
             id="carousel"
             class="carousel slide"
-            [style.display]="_flagCarouselHiden == true ? 'block' : 'none'"
+            [style.display]="_flagCarouselHiden == true ? 'none' : 'block'"
           >
             <ol class="carousel-indicators">
-              <ng-container *ngFor="let item of _images; index as i">
+              <ng-container *ngFor="let item of _selectedItemProduct.image; index as i">
                 <li
                   *ngIf="i == 0; else elseBlok"
                   (click)="changeImg(i)"
@@ -150,9 +152,10 @@
               <div class="carousel-item active">
                 <img
                   class="d-block w-100"
-                  src="{{ _url_img }}{{ _currentImage.name }}"
+                   src="{{ _url_img }}{{ _currentImage.name }}"
                   alt="First slide"
                 />
+
               </div>
             </div>
             <!---- end --class carousel-inner-->
@@ -173,21 +176,29 @@
           </div>
           <!-- Carousel end-->
 
-          <!---------------------Image Photo Begin----------------------01.05.21---------->
+          <!---------------------Image Photo Begin-- send  server data --------------------01.05.21---------->
 
-          <div class="form-group">
-            <div class="form-control">
+          <div *ngIf="_flag_sendServerData; else elseBlock">
+           <div>
+          <div class="form-group"  [style.display]="_flag_crop_upload_files ? 'block' : 'none'" >
+            <div [style.height]="_flag_ng_template ? '50px' : '350px'">
               <app-crop-upload-files
-                (getImg)="onSetFilePhoto($event)"
+                (getCropImg)="onSetFilePhoto($event)"
               ></app-crop-upload-files>
             </div>
           </div>
-          <div class="d-flex justify-content-center">
-            <img
-              [src]="_selectedImage.imageBase64"
-              [style.display]="_flagPhoto == true ? 'block' : 'none'"
-              class="img-wrap mb-3"
-            />
+        </div>
+          <div [style.display]="_flagPhoto ? 'block' : 'none'">
+            <div class="d-flex justify-content-center">
+              <!-----creat _flagBase64---------------------------------->
+
+              <img
+                [src]="_selectedCropImage"
+
+                class="img-wrap mb-3"
+              />
+            </div>
+
           </div>
 
 
@@ -207,10 +218,24 @@
               </button>
             </div>
           </div>
-        </div>
-      </div>
-    </div>
-    <!-- end edit  ------------------->
+          <!--- 18.05-->
+          <!-- end 18.05-->
+        </div>  <!-- end  _flag_sendServerData-->
+        <ng-template #elseBlock>
+          <div class="progress" >
+            <div class="progress-bar" role="progressbar" [style.width.%]="_progress"   ></div>
+          </div>
+          <div class="row"  style="text-align: center;">
+            <p>({{_progress}})</p>
+          <button class="btn btn-sm btn-warning" (click)="undo()">
+            Отмена
+          </button>
+          </div>
+        </ng-template>
+        </div> <!--end card-body-->
+      </div> <!--edn card -->
+    </div> <!-- div end edit-->
+    <!-- end edit template ------------------->
   </ng-template>
 </div>
 <!-- Caruosel Beging-->

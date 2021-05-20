@@ -2,12 +2,12 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { from } from 'rxjs';
 import { ProductComponent} from "./product/product.component";
-import{ItemProductComponent} from "./item-product/item-product.component"
+import{ProductDetailsComponent} from "./product-details/product-details.component"
 
 
 const routes: Routes = [
   {path:'',component:ProductComponent},
-  {path:'item',component:ItemProductComponent}
+  {path:'item',component:ProductDetailsComponent}
 ];
 
 @NgModule({

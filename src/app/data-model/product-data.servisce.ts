@@ -88,7 +88,8 @@ export class ProductDataService {
     //if (key != 'photo') 04..5.21
      formData.append(key, item[key]);
   });
-    return this.http.post(this.GetUrl(), formData);
+
+    return this.http.post(this.GetUrl(), formData,{ reportProgress: true,observe: 'events'});
   }
 
   //-------------
@@ -113,7 +114,10 @@ export class ProductDataService {
     //if (key != 'photo') 04..5.21
      formData.append(key, item[key]);
   });
-    return this.http.put(this.GetUrl() + '/' + item.id, formData);
+    return this.http.put(this.GetUrl() + '/' + item.id, formData,
+    { reportProgress: true ,
+      observe: 'events' // по умолчанию body  (observe?: 'body',|'events'-(HttpEvent<T>),|'response')
+     });
   }
 
   //--------------------

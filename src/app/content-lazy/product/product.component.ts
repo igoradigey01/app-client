@@ -39,8 +39,12 @@ export class ProductComponent implements OnInit {
    // console.log("katalogs------"+ this._katalogs);
   }
 
+  share(){
+    window.alert('The product has been shared!');
+  }
+
   // загрузить данные подКаталога по id
-  load(idKatalog: number) {
+ private load(idKatalog: number) {
     this._repository.GetProducts(idKatalog).subscribe(
       (d) => {
         this._products = d;

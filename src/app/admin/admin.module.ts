@@ -10,7 +10,7 @@ import { AdminComponent } from './admin/admin.component';
 import{FormsModule} from '@angular/forms';
 import { ProductComponent } from './product/product.component';
 import { UploadFilesComponent } from './upload-files/upload-files.component';
-import { ItemProductComponent } from './item-product/item-product.component';
+import {  ProductDetailsComponent } from './product-details/product-details.component';
 import { ProductTypeComponent } from './product-type/product-type.component';
 import { InfoComponent } from './info/info.component';
 import {LazyAdminServiceModule} from '../data-model/lazy-admin-service/lazy-admin-service.module'
@@ -26,7 +26,7 @@ import { ImageCropperModule } from 'ngx-image-cropper';//03.05.21
     AdminComponent,
     ProductComponent,
     UploadFilesComponent,
-    ItemProductComponent,
+    ProductDetailsComponent,
     ProductTypeComponent,
     InfoComponent,
     CropUploadFilesComponent

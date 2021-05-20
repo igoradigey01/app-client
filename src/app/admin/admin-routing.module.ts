@@ -4,7 +4,7 @@ import { Routes, RouterModule } from '@angular/router';
 import{AdminComponent} from './admin/admin.component';
 import{KatalogComponent} from './katalog/katalog.component';
 import{ProductComponent} from './product/product.component';
-import{ItemProductComponent} from './item-product/item-product.component'
+import{ProductDetailsComponent} from './product-details/product-details.component'
 import{ProductTypeComponent} from './product-type/product-type.component';
 import{InfoComponent} from './info/info.component';
 import {NomenclatureComponent} from './nomenclature/nomenclature.component'
@@ -14,7 +14,7 @@ const routes: Routes = [
   {path:'',component:AdminComponent},
   {path:'katalog',component:KatalogComponent},
   {path:'product',component:ProductComponent},
-  {path:'item-product',component:ItemProductComponent},
+  {path:'item-product',component:ProductDetailsComponent},
   {path:'type-product',component:ProductTypeComponent},
   {path:'info',component:InfoComponent},
   {path:'nomenclature',component:NomenclatureComponent}
