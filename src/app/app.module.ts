@@ -34,7 +34,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     HttpClientModule,
 
     //------------- auht-module---
-    RouterModule.forRoot(routes),
+    //------------- auht-module---
+RouterModule.forRoot(routes, { relativeLinkResolution: 'legacy' }),
     //--------- footer-module ----------
     FooterModule,
     HeaderModule,
