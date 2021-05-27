@@ -5,7 +5,7 @@
       class="btn"
       [class.active]="item == _selectedType"
       (click)="changeCategory(item)"
-      [routerLink]="['product',item.id]"
+      [routerLink]="['katalog/',item.id]"
     >
       {{ item.name }}
     </button>

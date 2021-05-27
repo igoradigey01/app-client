@@ -9,6 +9,7 @@ import {
 } from 'src/app/data-model/class-data.model';
 import { ProductDetailsDataService } from 'src/app/data-model/product-details-data.service';
 import { ActivatedRoute } from '@angular/router';
+import { HttpEvent, HttpEventType } from '@angular/common/http';
 
 @Component({
   selector: 'app-product-details',
@@ -64,7 +65,7 @@ export class ProductDetailsComponent implements OnInit {
   _flag_sendServerData: boolean = true;
   _progress: number = 0;
   //-----------------------------
-  _url_img = this._repository.GetUrlImg();
+  _url_img = this._repository.GetUrlImg;
 
   constructor(
     private _repository: ProductDetailsDataService,
@@ -81,6 +82,7 @@ export class ProductDetailsComponent implements OnInit {
   }
   // carousel medod
   Prev() {
+    this._error = '';
     // console.log("Click Prev button");
     //  this._currentImage=this._images[1];
     --this._currentIndex;
@@ -95,6 +97,7 @@ export class ProductDetailsComponent implements OnInit {
   }
   // carousel medod
   Next() {
+    this._error = '';
     ++this._currentIndex;
 
     if (this._currentIndex < this._selectedItemProduct.image.length) {
@@ -119,23 +122,46 @@ export class ProductDetailsComponent implements OnInit {
         this._error = 'Фото невыбрано!!';
         return;
       }
-
       //  this._selectedImage.photo = this._imgBase64;
       this._errorUotput = true;
     }
+    this._flag_sendServerData = false; //23.05.21
+
     let img: Image = new Image(
       -1,
       'temp.png',
       this._selectedItemProduct.product.id,
       this._selectedCropImage
     );
+    this._progress = 0;
     this._repository.AddImage(img).subscribe(
-      (data) => {
-        this._error = '';
-        this._errorUotput = false;
-        this._flagPhoto = false;
+      (data: HttpEvent<Image>) => {
+        switch (data.type) {
+          case HttpEventType.Sent:
+            // console.log('Sent-- запрос отправлен--CreateProduct--'); // запрос отправлен
+            break;
+          case HttpEventType.UploadProgress:
+            // do something
+            this._progress = Math.round((100 * data.loaded) / data.total);
+            //  console.log('HttpEventType.UploadProgress--' + this._progress);
+            break;
+          case HttpEventType.Response:
+            //  console.log('Finished');
+            // do someting -- response ok---
+            let d = data.body as Image;
+            // console.log('cteateProuct metod-- d.name--' + d.name);
+            this._selectedItemProduct.image.push(d);
+            this._error = '';
 
-        this.cancel(); //15.03.21
+            this._errorUotput = false;
+            //  this.cancel(); //15.03.21
+            this._flag_crop_upload_files = true;
+            this._flagPhoto = false;
+            this._flag_sendServerData = true; //23.05.21
+            this._flag_ng_template = true;
+            this._progress = 0;
+            break;
+        }
       },
       (err) => {
         this._error = err.error;
@@ -146,13 +172,39 @@ export class ProductDetailsComponent implements OnInit {
   }
 
   deleteImg() {
-    throwError('not impliment exeption');
+    // throwError('not impliment exeption');
+    if (this._currentImage.id == -1) {
+      let err = 'Выбранное Фото Можно изменить только в admin-меню-(товар)';
+      this._error = err;
+      console.log(err);
+      this._errorUotput = true;
+      return;
+    }
+    this._repository.DeleteImage(this._currentImage.id).subscribe(
+      (d) => {
+        let index = this._selectedItemProduct.image.findIndex((d) => {
+          d.id == this._currentImage.id;
+        });
+        if (index !== -1) {
+          this._selectedItemProduct.image =
+            this._selectedItemProduct.image.slice(index, 1);
+        }
+      },
+      (err) => {
+        this._error = err.error;
+        console.log(err);
+        this._errorUotput = true;
+      }
+    );
+    // console.log('curint_image-id--'+this._currentImage.id);
   }
 
   cancel() {
     this._flagViewMode = 'default';
     // this._products=null;//25.04.21
     this._selectedItemProduct = null; //25.04.21
+    this._flag_sendServerData = true; //23.05.21
+    this._error = '';
 
     // this._images = null; //25.04.21
     this._currentImage = null;
@@ -168,6 +220,7 @@ export class ProductDetailsComponent implements OnInit {
 
   undo() {
     this._flag_sendServerData = true;
+    this._error = '';
   }
 
   // колекция фото продукта []
@@ -201,6 +254,7 @@ export class ProductDetailsComponent implements OnInit {
 
   // Carousel metod
   changeImg(i: number) {
+    this._error = '';
     this._currentIndex = i;
     this._currentImage = this._selectedItemProduct.image[this._currentIndex];
     console.log('UpdateImgs()--_currentIndex--' + this._currentIndex);

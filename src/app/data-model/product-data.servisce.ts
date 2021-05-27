@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable} from 'rxjs';
-import {map, filter} from 'rxjs/operators';
+ //import {map, filter} from 'rxjs/operators';
 import { Katalog, Product, TypeProduct } from './class-data.model';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../environments/environment';
@@ -18,23 +18,23 @@ export class ProductDataService {
   _nameKatalog: any = '';
   //readonly _url:string="Type";
 
-  GetUrl(): string {
+ private get  GetUrl(): string {
     return environment.apiLocalHost + '/' + this._controllerPath;
   }
 
-  GetUrlImg():string{
+  public get GetUrlImg():string{
     return environment.imgHost;
   }
 
-  GetUrlBlobImag():string{
+  private get GetUrlBlobImag():string{
     return environment.apiLocalHost + '/' + this._controllerImage;
   }
 
-  GetUrlKatalog(): string {
+  private get GetUrlKatalog(): string {
     return environment.apiLocalHost + '/' + this._controllerKatalogPath;
   }
 
-  GetUrlTypeProduct():string{
+  private get GetUrlTypeProduct():string{
     return environment.apiLocalHost+'/'+this._controllerTypeProduct;
   }
 
@@ -43,22 +43,22 @@ export class ProductDataService {
   //-----------------------
   GetKatalogs(): Observable<Katalog[]> {
     //  console.log("DataServise---ProductType-test")
-    return this.http.get<Katalog[]>(this.GetUrlKatalog());
+    return this.http.get<Katalog[]>(this.GetUrlKatalog);
   }
 
   //-----------------------
   GetTypeProduct():Observable<TypeProduct[]>{
-    return this.http.get<TypeProduct[]>(this.GetUrlTypeProduct());
+    return this.http.get<TypeProduct[]>(this.GetUrlTypeProduct);
   }
 
   //-------------------
   GetProducts(idKatalog: number): Observable<Product[]> {
-    return this.http.get<Product[]>(this.GetUrl() + '/' + idKatalog);
+    return this.http.get<Product[]>(this.GetUrl + '/' + idKatalog);
   }
 
   GetBlobIMG(name:string):Observable<Blob>{
    // return this.http.get(src,{responseType: 'blob'});
-   let path=this.GetUrlBlobImag()+'/'+name;
+   let path=this.GetUrlBlobImag+'/'+name;
    return this.http.get(path,{responseType: 'blob'});
   }
 
@@ -89,7 +89,7 @@ export class ProductDataService {
      formData.append(key, item[key]);
   });
 
-    return this.http.post(this.GetUrl(), formData,{ reportProgress: true,observe: 'events'});
+    return this.http.post(this.GetUrl, formData,{ reportProgress: true,observe: 'events'});
   }
 
   //-------------
@@ -114,7 +114,7 @@ export class ProductDataService {
     //if (key != 'photo') 04..5.21
      formData.append(key, item[key]);
   });
-    return this.http.put(this.GetUrl() + '/' + item.id, formData,
+    return this.http.put(this.GetUrl + '/' + item.id, formData,
     { reportProgress: true ,
       observe: 'events' // по умолчанию body  (observe?: 'body',|'events'-(HttpEvent<T>),|'response')
      });
@@ -123,6 +123,6 @@ export class ProductDataService {
   //--------------------
   DeleteProduct(id: number) {
     // console.log('DeleteModel --delete--' + id);
-    return this.http.delete(this.GetUrl() + '/' + id);
+    return this.http.delete(this.GetUrl + '/' + id);
   }
 }

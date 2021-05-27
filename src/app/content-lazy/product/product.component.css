@@ -4,7 +4,7 @@
   width: 95%;
   margin-left: auto;
   margin-right: auto;
-  grid-template-columns: 1fr 1fr 1fr 1fr ;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
 }
 @media (max-width: 960px) {
   .grid-container {
@@ -14,7 +14,6 @@
     margin-right: 0;
     grid-template-columns: 1fr 1fr 1fr;
   }
-
 }
 
 @media (max-width: 768px) {
@@ -25,7 +24,6 @@
     margin-right: 0;
     grid-template-columns: 1fr 1fr;
   }
-
 }
 
 @media (max-width: 560px) {
@@ -36,35 +34,25 @@
     margin-right: 0;
     grid-template-columns: 1fr;
   }
-
 }
 
 /*----------------------------------------------*/
-.header h2{
-  text-align: center;
-  font-size: 1.4em;
-  font-weight: 900;
-  text-transform: uppercase;
-  padding-top: 1em;
 
-}
-h4{
+
+h4 {
   text-align: center;
   font-size: 1.2em;
   font-weight: 600;
   text-transform: uppercase;
-
 }
 
-div{
- /* background-color: darkgrey; */
- background-color: #d2ddd8;
-
+div {
+  /* background-color: darkgrey; */
+  background-color: #d2ddd8;
   color: #656565;
 }
 
 .card div {
   background-color: #e3eee9;
   background-image: url(./../../../assets/images/bg_img/menuDropBG.png) repeat;
-
 }

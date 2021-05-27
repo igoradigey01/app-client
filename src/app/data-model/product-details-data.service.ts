@@ -1,83 +1,115 @@
 import { Injectable } from '@angular/core';
 import { environment } from '../../environments/environment';
 import { HttpClient } from '@angular/common/http';
-import {  Observable } from 'rxjs';
-import {Image,Katalog,Product} from './class-data.model';
-import {LazyAdminServiceModule} from './lazy-admin-service/lazy-admin-service.module'
+import { Observable } from 'rxjs';
+import { Image, Katalog, Product } from './class-data.model';
+import { LazyAdminServiceModule } from './lazy-admin-service/lazy-admin-service.module';
 
-@Injectable(
-  {providedIn:LazyAdminServiceModule}
-)
+@Injectable({ providedIn: LazyAdminServiceModule })
 export class ProductDetailsDataService {
-
-  readonly _controllerItemProductPath: string = 'ProductItem';
-  //[Route("api/[controller]/[action]")]--api server
-  readonly _controllerItemProdctActionGetPath:string='GetImages'
-  readonly _controllerItemProdctActionAddPath:string='CreateImage'
-  //----------------------------
+  readonly _controllerProductDetailsPath: string = 'ProductItem';
   readonly _controllerProductPath: string = 'product';
   readonly _controllerKatalogPath: string = 'katalog';
-  readonly _controllerImage:string='image';
+  readonly _controllerBlobImage: string = 'image';
+  //[Route("api/[controller]/[action]")]--api server
+  readonly _controllerProductDetails_Action_GetImages: string = 'GetImages';
+  readonly _controllerProductDetails_Action_AddImage: string = 'CreateImage';
+  readonly _controllerProductDetails_Action_DeleteImage:string='Delete';
+  readonly _controllerProductDetails_Action_GetItemProduct:string='GetItemProducts';
+  //----------------------------
 
-
-  GetUrl(): string {
-    return environment.apiLocalHost + '/' + this._controllerItemProductPath+'/'+this._controllerItemProdctActionGetPath;
+  private get GetUrlProductDetailsImages(): string {
+    return (
+      environment.apiLocalHost +
+      '/' +
+      this._controllerProductDetailsPath +
+      '/' +
+      this._controllerProductDetails_Action_GetImages
+    );
   }
-  GetUrlBlobImag():string{
-    return environment.apiLocalHost + '/' + this._controllerImage;
+  private get GetUrlBlobImag(): string {
+    return environment.apiLocalHost + '/' + this._controllerBlobImage;
   }
 
-  AddUrl():string{
-    return environment.apiLocalHost+'/'+this._controllerItemProductPath+'/'+this._controllerItemProdctActionAddPath;
+  private get AddUrl(): string {
+    return (
+      environment.apiLocalHost +
+      '/' +
+      this._controllerProductDetailsPath +
+      '/' +
+      this._controllerProductDetails_Action_AddImage
+    );
   }
 
-  GetUrlImg():string{
+  private get DeleteUrl():string{
+    return (
+      environment.apiLocalHost +
+      '/' +
+      this._controllerProductDetailsPath +
+      '/' +
+      this._controllerProductDetails_Action_DeleteImage
+    );
+
+  }
+
+  public get GetUrlImg(): string {
     return environment.imgHost;
   }
-  GetUrlKatalog(): string {
+  private get GetUrlKatalog(): string {
     return environment.apiLocalHost + '/' + this._controllerKatalogPath;
   }
 
-  GetUrlProduct(): string {
+  private get GetUrlProduct(): string {
     return environment.apiLocalHost + '/' + this._controllerProductPath;
+  }
+
+  private get GetUrlProductDetails(): string {
+    return environment.apiLocalHost + '/' + this._controllerProductDetailsPath;
   }
 
   constructor(private http: HttpClient) {}
 
   GetImages(idProduct: number): Observable<Image[]> {
-    console.log("getItemProducts-repository(idProduct )--"+idProduct);
-    return this.http.get<Image[]>(this.GetUrl() + '/' + idProduct);
+    console.log('getItemProducts-repository(idProduct )--' + idProduct);
+    return this.http.get<Image[]>(this.GetUrlProductDetailsImages + '/' + idProduct);
   }
 
-  GetBlobIMG(name:string):Observable<Blob>{
+  GetBlobIMG(name: string): Observable<Blob> {
     // return this.http.get(src,{responseType: 'blob'});
-    let path=this.GetUrlBlobImag()+'/'+name;
-    return this.http.get(path,{responseType: 'blob'});
-   }
+    let path = this.GetUrlBlobImag + '/' + name;
+    return this.http.get(path, { responseType: 'blob' });
+  }
 
   GetKatalogs(): Observable<Katalog[]> {
     //  console.log("DataServise---ProductType-test")
-    return this.http.get<Katalog[]>(this.GetUrlKatalog());
+    return this.http.get<Katalog[]>(this.GetUrlKatalog);
   }
 
   GetProducts(idKatalog: number): Observable<Product[]> {
-    return this.http.get<Product[]>(this.GetUrlProduct() + '/' + idKatalog);
+    return this.http.get<Product[]>(this.GetUrlProduct + '/' + idKatalog);
   }
 
-  AddImage(item:Image){
+  GetItemProducts(idProduct: number): Observable<Product> {
+    // console.log(' Error("not impliment exsaption;;');
+    return this.http.get<Product>(this.GetUrlProductDetails+'/' +this._controllerProductDetails_Action_GetItemProduct+'/' +idProduct);
+  }
 
+  AddImage(item: Image):Observable<any> {
     const formData = new FormData();
-      // photo- base64 string
+    // photo- base64 string
     Object.keys(item).forEach((key) => {
-    //  console.log(key + '' + item[key]);
+      //  console.log(key + '' + item[key]);
       //if (key != 'photo') 04..5.21
-       formData.append(key, item[key]);
+      formData.append(key, item[key]);
     });
-    return this.http.post(this.AddUrl(), formData);
+    return this.http.post(this.AddUrl, formData,{ reportProgress: true,observe: 'events'});
+  }
+  DeleteImage(idImage: number):Observable<any> {
+
+    console.log("----delete----");
+    return this.http.delete(this.DeleteUrl+'/'+idImage);
+
+
 
   }
-  DeleteImage(idImage:number){
-
-  }
-
 }
