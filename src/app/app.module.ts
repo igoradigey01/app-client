@@ -7,7 +7,7 @@ import { FormsModule } from '@angular/forms';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 // ----Firebase services + enviorment module---
 
-import { AngularFireModule } from '@angular/fire';
+//import { AngularFireModule } from '@angular/fire'; 27.05.21
 import { environment } from '../environments/environment';
 //import { AngularFireDatabaseModule } from '@angular/fire/database'; 15.08.20
 import { HttpClientModule } from '@angular/common/http';
@@ -18,10 +18,11 @@ import { routes } from './app-routing.module';
 import { GlobalVar } from './globalVar';
 
 //----------------------- footer module -----------
-import { FooterModule } from './footer/footer.module';
+
 import { HeaderModule } from './header/header.module';
 import { ContentModule } from './content/content.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+
 
 // глобальные переменные для приложения
 
@@ -32,19 +33,13 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     AppRoutingModule,
     FormsModule,
     HttpClientModule,
-
-    //------------- auht-module---
-    //------------- auht-module---
-RouterModule.forRoot(routes, { relativeLinkResolution: 'legacy' }),
+    RouterModule.forRoot(routes, { relativeLinkResolution: 'legacy' }),
     //--------- footer-module ----------
-    FooterModule,
+
     HeaderModule,
     ContentModule,
-
-    //----------- firebas ---------------
-    AngularFireModule.initializeApp(environment.firebaseConfig),
-
     BrowserAnimationsModule,
+   
   ],
   providers: [
     //    {provide:HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },                  // authInterceptorProviders,

@@ -6,6 +6,8 @@ import{GarantiyaComponent} from './garantiya/garantiya.component'
 import{KakZakazatComponent} from './kak-zakazat/kak-zakazat.component'
 import{OplataIDostavkaComponent} from './oplata-i-dostavka/oplata-i-dostavka.component'
 import {NavBarComponent} from './nav-bar/nav-bar.component'
+import {MaterialModule} from './../material/material.module'
+
 
 
 @NgModule({
@@ -18,7 +20,9 @@ import {NavBarComponent} from './nav-bar/nav-bar.component'
   ],
   imports: [
     CommonModule,
-    HeaderRoutingModule
+    HeaderRoutingModule,
+    MaterialModule
+
   ],
    exports:[
      AboutComponent,

@@ -22,6 +22,9 @@ export const routes: Routes = [
     loadChildren: () =>
       import('./admin/admin.module').then((m) => m.AdminModule),
   },
+  {
+    path:'content-lazy',loadChildren:()=> import ('./content-lazy/content-lazy.module').then((m)=>m.ContentLazyModule)
+  },
   { path: 'menu', loadChildren: () => HeaderModule },
 
   { path: '**', component: PageNotFoundComponent },

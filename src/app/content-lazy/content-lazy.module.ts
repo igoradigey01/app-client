@@ -4,12 +4,14 @@ import { CommonModule } from '@angular/common';
 import { ProductRoutingModule } from './content-lazy-routing.module';
 import { ProductComponent } from './product/product.component';
 import { ProductDetailsComponent } from './product-details/product-details.component';
+import { PrivacyComponent } from './privacy/privacy.component';
 
 
 @NgModule({
   declarations: [
     ProductComponent,
-    ProductDetailsComponent
+    ProductDetailsComponent,
+    PrivacyComponent
   ],
   imports: [
     CommonModule,
@@ -19,4 +21,4 @@ import { ProductDetailsComponent } from './product-details/product-details.compo
     ProductComponent
   ]
 })
-export class ProductModule { }
+export class ContentLazyModule { }

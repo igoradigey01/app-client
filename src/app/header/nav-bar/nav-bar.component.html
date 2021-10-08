@@ -1,104 +1,95 @@
-<div>
-  <header>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-      <a class="navbar-brand" routerLink="/" routerLinkActive="active">
-        <img src="./../../assets/icon/logo2.svg" height="38" alt="X-01" />
-      </a>
-      <!--  06.05.2020      -->
-      <p class="text-light text-uppercase font-weight-bold">
-     <a href="tel:+79002440328">  ( +7-900-244-03-28 ) </a>
-      </p>
-      <button
-        class="navbar-toggler"
-        type="button"
-        data-toggle="collapse"
-        data-target="#navbarColor01"
-        aria-controls="navbarColor01"
-        aria-expanded="false"
-        aria-label="Toggle navigation"
-      >
-        <span class="navbar-toggler-icon"></span>
+<mat-toolbar class="_container_nav">
+  <div class="col_inner">
+    <a routerLink="" class="nav_link">
+      <span class="logo_inner-name" >{{company_name_1}}</span>
+
+      <img
+        class="logo_inner-img"
+        src="./../../assets/icon/logo2.svg" height="38" alt="logo company X-01"
+        loading="lazy"
+      />
+      <span class="logo_inner-name-2">{{ company_name_2}}</span>
+    </a>
+  </div>
+  <div class="col_inner logo-column">
+    <div class="logo-position-name"> <span > {{company_name_1}}</span><span> </span> <span style="color: black;"> {{company_name_2}}</span></div>
+    <div class="commutation"></div>
+    <a class="nav_link"  href="tel:+79002440328">  ( +7-900-244-03-28 ) </a>
+
+    <div class="conteiner-social-apps">
+      <button type="button" class="btn btn-link">
+        <a href="https://www.instagram.com/x_01.ru/">
+      <img src="./../../../assets/icon/massager_social/Instagram_64_2.png" class="img-social-apps" alt="instagram">
+    </a>
+    </button>
+      <button type="button" class="btn btn-link">
+        <a href=" https://wa.me/+79002440328?text=Здравствуйте%20(x-01)%20Меня%20интересует%20информация%20о%20 ">
+      <img src="./../../../assets/icon/massager_social/Whatsapp_64.png" class="img-social-apps" alt="whatsapp" >
+    </a>
       </button>
 
-      <div class="collapse navbar-collapse" id="navbarColor01">
-        <ul class="navbar-nav ml-auto text-uppercase font-weight-bold">
-          <li class="nav-item active">
-            <a class="" routerLink="/" routerLinkActive="active"
-              ><img src="./../../assets/icon/home2.svg" alt="Дом" height="35"
-            /></a>
-          </li>
-          <li class="nav-item">
-            <a
-              class="nav-link"
-              routerLink="menu/oplata-i-dostavka"
-              routerLinkActive="active"
-              >Оплата и Доставка
-            </a>
-          </li>
-          <li class="nav-item">
-            <a
-              class="nav-link"
-              routerLink="menu/kakZakazat"
-              routerLinkActive="active"
-              >Как заказать?</a
-            >
-          </li>
-          <li class="nav-item">
-            <a
-              class="nav-link"
-              routerLink="menu/garantiya"
-              routerLinkActive="active"
-              >Гарантии</a
-            >
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" routerLink="menu/about" routerLinkActive="active"
-              >О нас</a
-            >
-          </li>
-          <li class="nav-item" >
-            <div *ngIf="getUsrAdmin();then thenBlockAdmin else elseBlockAdmin "> </div>
-              <ng-template #thenBlockAdmin>
-            <button type="button" class="btn btn-success navbar-btn mr-1 mb-1" routerLink="/admin" routerLinkActive="active"
-              >Админ</button
-            >
-          </ng-template>
-          <ng-template #elseBlockAdmin>
-            <div></div>
+    </div>
+  </div>
 
-          </ng-template>
-
-
-          </li>
-          <li class="nav-item">
-
-
-              <div *ngIf="getUsrAuht(); then thenBlock else elseBlock"></div>
-            <ng-template #elseBlock> <button type="button"
-
-              class="btn btn-danger navbar-btn login-btn"
-
-              routerLink="/auth"
-            >
-            <img src="./../../assets/icon/auth/log-in.svg"  height="23" alt="ВХОД"
-            />
-
-            </button></ng-template>
-            <ng-template #thenBlock> <button type="button"
-
-              class="btn btn-success navbar-btn login-btn"
-
-              routerLink="/auth/user-profile"
-            >
-            <img src="./../../assets/icon/auth/log-in.svg"  height="23" alt="ВЫХОД"
-            />
-
-            </button></ng-template>
-
-
-          </li>
-        </ul>
+  <div class="col_inner">
+    <!------------ start button menu-->
+    <div class="mobile-nav">
+      <!---       statr -->
+      <div class="menu-md">
+        <button mat-icon-button (click)="drawer.toggle()" class="nav_link">
+          <mat-icon>menu</mat-icon>
+        </button>
       </div>
-    </nav>
-  </header>
-</div>
+      <!---------/-->
+    </div>
+
+    <div class="menu-lg">
+      <span>
+        <a class="nav_link" routerLink="menu/kak-zakazat">Как заказать?</a>
+      </span>
+      <span>
+        <a class="nav_link" routerLink="menu/oplata-i-dostavka">Оплата и Доставка</a>
+      </span>
+      <span>
+        <a class="nav_link" routerLink="menu/garantiya">Гарантии</a>
+      </span>
+
+      <span>
+        <a class="nav_link" routerLink="menu/about">онас</a>
+      </span>
+    </div>
+  </div>
+</mat-toolbar>
+<mat-drawer-container>
+    <!------------ start button menu-->
+  <mat-drawer #drawer class="app-navbar">
+    <ul class="navbar-nav me-auto my-2 pe-2">
+      <li class="nav-item py-1" >
+        <a class="nav-link body-2 app-nav-link " (click)="drawer.toggle()" routerLink="">Home</a>
+      </li>
+
+      <li class="nav-item py-1" >
+        <a class="nav-link body-2 app-nav-link " (click)="drawer.toggle()" routerLink="menu/kak-zakazat">Как заказать?</a>
+      </li>
+      <li class="nav-item py-1" >
+        <a class="nav-link body-2 app-nav-link " (click)="drawer.toggle()" routerLink="menu/oplata-i-dostavka">Оплата и Доставка</a>
+      </li>
+      <li class="nav-item py-1">
+        <a class="nav-link body-2 app-nav-link " (click)="drawer.toggle()" routerLink="menu/garantiya">Гарантии</a>
+      </li>
+
+      <li class="nav-item py-1">
+        <a class="nav-link body-2 app-nav-link " (click)="drawer.toggle()" routerLink="menu/about">онас</a>
+      </li>
+
+
+    </ul>
+
+  </mat-drawer>
+   <!---------/-->
+  <mat-drawer-content>
+    <div class="_body"></div>
+    <router-outlet></router-outlet>
+  </mat-drawer-content>
+</mat-drawer-container>
+

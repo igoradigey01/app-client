@@ -3,8 +3,14 @@
     "",
     "\\src",
     "\\src\\app",
-    "\\src\\app\\data-model"
+    "\\src\\app\\content-lazy",
+    "\\src\\app\\content-lazy\\product",
+    "\\src\\app\\data-model",
+    "\\src\\app\\data-model\\lazy-admin-service",
+    "\\src\\app\\header",
+    "\\src\\app\\header\\nav-bar",
+    "\\src\\app\\page-not-found"
   ],
-  "SelectedNode": "\\src\\app\\data-model\\class-data.model.ts",
+  "SelectedNode": "\\src\\app\\header\\nav-bar\\nav-bar.component.html",
   "PreviewInSolutionExplorer": false
 }
