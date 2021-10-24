@@ -14,21 +14,21 @@ export class BgCarouselComponent implements OnInit {
 
              _listImg:string[]=['bg-1.jpg','bg-2.jpg','bg-3.jpg','bg-4.jpg','bg-5.jpg'];
              _i:number=0;
-             _imgScr:string=null;
+             _imgScr:string|null=null;
 
              _imgScrStatic:string=this._bgImagePath+'menuDropBG.png';
 
              _carouselIndicatorPath:string='/../../assets/icon/';
              _carouselDataSlideImg:string='circle-wite.svg';
              _carouselIndicatorImg:string='circle.svg';
-             _srcImg1:string=null;
-             _srcImg2:string=null;
-             _srcImg3:string=null;
-             _srcImg4:string=null;
-             _srcImg5:string=null;
+             _srcImg1:string|null=null;
+             _srcImg2:string|null=null;
+             _srcImg3:string|null=null;
+             _srcImg4:string|null=null;
+             _srcImg5:string|null=null;
              _bgFlag:boolean=false;
 
-             _bgImageChouseTamer =null;
+             _bgImageChouseTamer: Subscription|null =null;
 
 
 
@@ -56,7 +56,7 @@ export class BgCarouselComponent implements OnInit {
     //this._bgImageChouseTamer.subscribe( ()=> this.bgImagePath());
 
     //---------------------------------
-         let obj:Observable<string>    = Observable.create(observer => {
+         let obj:Observable<string>    = new Observable(observer => {
        const interval = setInterval(() => observer.next(this.bgImagePath()), 30000);
        return () => clearInterval(interval);
        });
@@ -136,7 +136,8 @@ export class BgCarouselComponent implements OnInit {
     if(this._bgFlag==false)
     {
       this._bgFlag=true;
-      <Subscription> this._bgImageChouseTamer.unsubscribe();
+      if(this._bgImageChouseTamer)
+    this._bgImageChouseTamer.unsubscribe();
 
 
 
@@ -167,6 +168,7 @@ export class BgCarouselComponent implements OnInit {
   }
   //сборщик мусора
   ngOnDestroy() {
+    if(this._bgImageChouseTamer)
     this._bgImageChouseTamer.unsubscribe();
   // console.log("--test ngOnDestroy unsebscrable()--")
   }

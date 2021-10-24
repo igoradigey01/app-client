@@ -6,7 +6,7 @@ import { BgCarouselComponent} from './bg-carousel/bg-carousel.component';
 
 const routes: Routes = [
   {path:'',component:BgCarouselComponent},
-  {path:'katalog/:katalogId',loadChildren:()=>import('./../content-lazy/content-lazy.module').then(m=>m.ContentLazyModule) },
+ ,
 ];
 
 @NgModule({

@@ -5,41 +5,42 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { FormsModule } from '@angular/forms';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
-// ----Firebase services + enviorment module---
-
-//import { AngularFireModule } from '@angular/fire'; 27.05.21
-import { environment } from '../environments/environment';
-//import { AngularFireDatabaseModule } from '@angular/fire/database'; 15.08.20
 import { HttpClientModule } from '@angular/common/http';
-
-//--- auth-module---
-import { routes } from './app-routing.module';
 
 import { GlobalVar } from './globalVar';
 
 //----------------------- footer module -----------
 
 import { HeaderModule } from './header/header.module';
-import { ContentModule } from './content/content.module';
+
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-
-
+import {MaterialModule} from './material/material.module';
+import { NavBarComponent } from './header/menu/menu.component';
+import {KatalogComponent} from './content/katalog/katalog.component';
+import {BgCarouselComponent} from './content/bg-carousel/bg-carousel.component'
 // глобальные переменные для приложения
 
 @NgModule({
-  declarations: [AppComponent, PageNotFoundComponent],
+  declarations: [
+    AppComponent,
+    PageNotFoundComponent,
+    NavBarComponent,
+    KatalogComponent,
+    BgCarouselComponent
+  ],
   imports: [
     BrowserModule,
     AppRoutingModule,
+    MaterialModule,
     FormsModule,
     HttpClientModule,
-    RouterModule.forRoot(routes, { relativeLinkResolution: 'legacy' }),
+   // RouterModule,
+//    RouterModule.forRoot(routes, { relativeLinkResolution: 'legacy' }),
     //--------- footer-module ----------
 
     HeaderModule,
-    ContentModule,
+
     BrowserAnimationsModule,
-   
   ],
   providers: [
     //    {provide:HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },                  // authInterceptorProviders,
@@ -47,4 +48,4 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
   ],
   bootstrap: [AppComponent],
 })
-export class AppModule {}
+export class AppModule { }

@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { ContentModule } from './content/content.module';
-import { HeaderModule } from './header/header.module';
+import {BgCarouselComponent} from './content/bg-carousel/bg-carousel.component'
+
 
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 
@@ -9,7 +9,7 @@ import { PageNotFoundComponent } from './page-not-found/page-not-found.component
 //import { from } from 'rxjs';
 
 export const routes: Routes = [
-  { path: '', loadChildren: () => ContentModule },
+  {path:'',component:BgCarouselComponent},
 
   //{path:'shop-categories/:categoryId',component:ProductComponent},
 
@@ -23,15 +23,31 @@ export const routes: Routes = [
       import('./admin/admin.module').then((m) => m.AdminModule),
   },
   {
-    path:'content-lazy',loadChildren:()=> import ('./content-lazy/content-lazy.module').then((m)=>m.ContentLazyModule)
+    path: 'katalog/:katalogId',
+    loadChildren: () =>
+      import('./content-lazy/content-lazy.module').then(
+        (m) => m.ContentLazyModule
+      ),
   },
-  { path: 'menu', loadChildren: () => HeaderModule },
+  {
+    path: 'content-lazy',
+    loadChildren: () =>
+      import('./content-lazy/content-lazy.module').then(
+        (m) => m.ContentLazyModule
+      ),
+  },
+  // { path: 'menu', loadChildren: () => HeaderModule },
+  {
+    path: 'menu',
+    loadChildren: () =>
+      import('./header/header.module').then((m) => m.HeaderModule),
+  },
 
   { path: '**', component: PageNotFoundComponent },
 ];
 
 @NgModule({
-  imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule],
+  imports: [RouterModule.forRoot(routes)],
+  exports: [RouterModule]
 })
-export class AppRoutingModule {}
+export class AppRoutingModule { }

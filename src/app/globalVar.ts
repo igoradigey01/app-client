@@ -2,7 +2,7 @@
 import { Injectable } from "@angular/core";
 import { User } from './data-model/class-data.model';
 
-@Injectable()
+@Injectable({ providedIn: "root"})
 export class GlobalVar {
   userAuth: boolean = false; // авторизован ли пользователь ? иконка входа цвет
   userSerialize: User = null; // передача данных на сервер в параметрах // edit-profile,profile
